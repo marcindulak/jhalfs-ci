@@ -1,0 +1,10 @@
+# Teporary files
+old
+*~
+
+# Vagrant
+.vagrant
+
+# jhalfs
+jhalfs
+sources
