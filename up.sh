@@ -20,7 +20,8 @@ echo export LFS=$PWD/jhalfs/mnt/build_dir > jhalfs/jhalfs.sh
 # Export the variable used by jhalfs for storing the downloaded sources
 # See https://www.linuxfromscratch.org/alfs/documentation.html 4.2. PRELIMINARY TASKS
 echo export SRC_ARCHIVE=$PWD/sources >> jhalfs/jhalfs.sh
-# Configure make to run in parallel
+# Configure make to run in parallel.
+# Note that these settings are not effective and are overwritten by the book XML.
 # See https://www.linuxfromscratch.org/lfs/view/systemd/chapter04/aboutsbus.html
 echo export MAKEFLAGS="-j$(nproc)" >> jhalfs/jhalfs.sh
 echo export N_PARALLEL=$(nproc) >> jhalfs/jhalfs.sh

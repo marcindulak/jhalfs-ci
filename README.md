@@ -2,10 +2,9 @@
 
 # Description
 
-**Warning**: this project uses privileged containers and can make your host (laptop) non-bootable.
+**Warning**: this project uses privileged containers and may make your host (laptop) non-bootable.
 
-This project performs Automated Linux From Scratch [jhalfs](https://www.linuxfromscratch.org/alfs)
-using vagrant and docker, for the purpose of continuous integration.
+This project performs Automated Linux From Scratch [jhalfs](https://www.linuxfromscratch.org/alfs) using docker.
 
 The [jhalfs](https://www.linuxfromscratch.org/alfs) is a set of scripts which retrieves
 the Linux From Scratch [lfs](https://www.linuxfromscratch.org/lfs/) book, extracts
@@ -13,29 +12,27 @@ the commands by parsing the chapter's XML, and generates scripts managed using a
 
 The [systemd version of the lfs](https://www.linuxfromscratch.org/lfs/view/systemd/) book is used, as systemd is the standard nowadays.
 At the time of writing, chapter [10. Making the LFS System Bootable](https://www.linuxfromscratch.org/lfs/view/systemd/chapter10/chapter10.html)
-is not completely performed. The `/etc/fstab` file is not populated with correct values and boot loader is not overwritten.
-It is **important** to not perform these steps as the docker container has the host (laptop) access,
-so errors may make the host (laptop) non-bootable.
+is not completely executed by the scripts. In particular, the `/etc/fstab` file is not populated with correct values and boot loader is not overwritten.
+It is important to **not** perform these steps as the docker container has the host (laptop) access,
+and errors may make the host (laptop) non-bootable.
 
-**Note**: the setup requires about 15GB of disk space. Both Intel and Apple silicon processors are supported.
+**Note**: the setup requires about 15GB of disk space. Both Intel and Apple silicon (untested) processors are supported.
 
 # Setup
 
 **Note**: MacOS is untested.
 
-1. Install [vagrant](https://www.vagrantup.com/). On MacOS use `brew install vagrant`.
-
-2. Install [docker](https://docs.docker.com/engine/install/ubuntu/).
+1. Install [docker](https://docs.docker.com/engine/install/ubuntu/) and docker-compose.
    On MacOS install [rancher-desktop](https://rancherdesktop.io/),
    and during the installation select "moby/dockerd" as the engine.
 
 # Usage
 
-1. The setup in this repository uses [vagrant](https://www.vagrantup.com/) to start an Ubuntu container,
+1. The setup in this repository uses docker to start an [ubuntu:latest](https://hub.docker.com/_/ubuntu/) container,
 inside of which lfs is built.
 
    ```sh
-   vagrant up
+   docker-compose up -d
    ```
 
    In preliminary steps a loopback device is created, formatted and mounted as the destination for
@@ -47,21 +44,28 @@ inside of which lfs is built.
 After the preliminary steps are done, the `jhalfs` script is invoked to generate the scripts and makefile.
 
    ```sh
-   vagrant docker-exec -t -- bash -c "cd /vagrant && bash /vagrant/up.sh"
+   docker-compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/up.sh"
    ```
 
    Fetch the commits of the jhalfs and lfs books with:
    ```sh
-   vagrant docker-exec -t -- bash -c "su - vagrant -c 'cd /home/vagrant/jhalfs && git show --oneline --no-abbrev --shortstat'"
+   docker-compose exec jhalfs bash -c "su - vagrant -c 'cd /home/vagrant/jhalfs && git show --oneline --no-abbrev --shortstat'"
    ```
    ```sh
-   vagrant docker-exec -t -- bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
+   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
+   ```
+
+   The references to `/vagrant` in this repository are leftovers from a [vagrant](https://www.vagrantup.com/) based setup.
+
+   If desired, force the make of gcc/glibc to run two jobs in parallel. This is disabled by default. The compilation of gcc/glibc is one of the most time consuming steps.
+   ```sh
+   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && for file in \$(find lfs-commands -name \"*gcc*\" -o -name \"*glibc*\"); do echo \$file && sed -i \"s/make -j./make -j2/\" \$file; done'"
    ```
 
 3. From this point, individual makefile targets can be executed, for example:
 
    ```sh
-   vagrant docker-exec -t -- bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make ck_UID'"
+   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make ck_UID'"
    ```
 
    See `jhalfs/targets` for the list of existing makefile targets.
