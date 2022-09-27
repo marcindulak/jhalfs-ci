@@ -67,12 +67,12 @@ DEL_LA_FILES=y
 # CONFIG_BUILD_KERNEL is not set
 # NCURSES5 is not set
 TIMEZONE="GMT"
-LANG="C"
+LANG="en_US"
 # FULL_LOCALE is not set
 PAGE_LETTER=y
 # PAGE_A4 is not set
 PAGE="letter"
-HOSTNAME="**EDITME**"
+HOSTNAME="jhalfs"
 
 #
 # Network configuration
@@ -100,7 +100,7 @@ KEYMAP="us"
 # Advanced Features
 #
 REPORT=y
-# SAVE_CH5 is not set
+SAVE_CH5=y
 # COMPARE is not set
 # CONFIG_OPTIMIZE is not set
 OPTIMIZE=0

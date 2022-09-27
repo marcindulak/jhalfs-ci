@@ -23,6 +23,7 @@ echo export SRC_ARCHIVE=$PWD/sources >> jhalfs/jhalfs.sh
 # Configure make to run in parallel
 # See https://www.linuxfromscratch.org/lfs/view/systemd/chapter04/aboutsbus.html
 echo export MAKEFLAGS="-j$(nproc)" >> jhalfs/jhalfs.sh
+echo export N_PARALLEL=$(nproc) >> jhalfs/jhalfs.sh
 
 # Create vagrant user which will perform the jhalfs run
 apt-get update
@@ -54,8 +55,9 @@ su - vagrant -c 'cp /vagrant/configuration /home/vagrant/jhalfs'
 # See https://www.linuxfromscratch.org/lfs/view/systemd/chapter02/hostreqs.html
 DEBIAN_FRONTEND=noninteractive apt-get install -y bison coreutils diffutils findutils gawk g++ grep gzip m4 make patch perl python3 sed tar texinfo xz-utils
 # Generate the jhalfs makefiles under $LFS
-# Downloading of patches tends to fail, run the scripts twice
+# Downloading of patches tends to fail, run the scripts a few times
 # Resolving www.linuxfromscratch.org (www.linuxfromscratch.org)... failed: Temporary failure in name resolution.
+su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd /home/vagrant/jhalfs && while ! $(curl -s --max-time 5 -L www.linuxfromscratch.org > /dev/null); do echo Trying to reach www.linuxfromscratch.org ...  && sleep 5; done && yes yes | ./jhalfs run'
 su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd /home/vagrant/jhalfs && while ! $(curl -s --max-time 5 -L www.linuxfromscratch.org > /dev/null); do echo Trying to reach www.linuxfromscratch.org ...  && sleep 5; done && yes yes | ./jhalfs run'
 su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd /home/vagrant/jhalfs && while ! $(curl -s --max-time 5 -L www.linuxfromscratch.org > /dev/null); do echo Trying to reach www.linuxfromscratch.org ...  && sleep 5; done && yes yes | ./jhalfs run'
 # Extract the jhalfs make targets
