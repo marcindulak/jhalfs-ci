@@ -6,5 +6,7 @@ old
 .vagrant
 
 # jhalfs
+build_dir.img
 jhalfs
+jhalfs*.tar
 sources

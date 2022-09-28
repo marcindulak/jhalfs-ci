@@ -1,4 +1,4 @@
-[![ci](https://github.com/marcindulak/jhalfs-ci-noboot/workflows/ci/badge.svg)](https://github.com/marcindulak/jhalfs-ci-noboot/actions/workflows/ci.yaml)
+[![ci](https://github.com/marcindulak/jhalfs-ci/workflows/ci/badge.svg)](https://github.com/marcindulak/jhalfs-ci/actions/workflows/ci.yaml)
 
 # Description
 
@@ -16,7 +16,8 @@ is not completely executed by the scripts. In particular, the `/etc/fstab` file 
 It is important to **not** perform these steps as the docker container has the host (laptop) access,
 and errors may make the host (laptop) non-bootable.
 
-**Note**: the setup requires about 15GB of disk space. Both Intel and Apple silicon (untested) processors are supported.
+**Note**: the setup requires about 15GB of disk space for the loopback file.
+Both Intel and Apple silicon (untested) processors are supported.
 
 # Setup
 
@@ -41,7 +42,8 @@ inside of which lfs is built.
 
 2. The [up.sh](up.sh) script in this repository performs these preliminary steps, up to and including
 [chapter4](https://www.linuxfromscratch.org/lfs/view/systemd/chapter04/chapter04.html) of the lfs book.
-After the preliminary steps are done, the `jhalfs` script is invoked to generate the scripts and makefile.
+After the preliminary steps are done, `jhalfs run` is invoked to generate the scripts and makefile.
+The configuration used by `jhalfs run` is stored in the `configuration` file in the root folder of this repository.
 
    ```sh
    docker-compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/up.sh"
@@ -57,22 +59,68 @@ After the preliminary steps are done, the `jhalfs` script is invoked to generate
 
    The references to `/vagrant` in this repository are leftovers from a [vagrant](https://www.vagrantup.com/) based setup.
 
-   If desired, force the make of gcc/glibc to run two jobs in parallel. This is disabled by default. The compilation of gcc/glibc is one of the most time consuming steps.
+   If desired, force the make of gcc/glibc to run two jobs in parallel. This is disabled by default, and not recommended.
+   The compilation of gcc/glibc is one of the most time consuming steps.
    ```sh
    docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && for file in \$(find lfs-commands -name \"*gcc*\" -o -name \"*glibc*\"); do echo \$file && sed -i \"s/make -j./make -j2/\" \$file; done'"
    ```
 
-3. From this point, individual makefile targets can be executed, for example:
+3. From this point the individual makefile targets can be executed, for example:
 
    ```sh
    docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make ck_UID'"
    ```
 
    See `jhalfs/targets` for the list of existing makefile targets.
-   The result of the build is available under `jhalfs/mnt/build_dir`.
+   The result of the build is available under `jhalfs/mnt/build_dir`. If you want to access the contents of this directory
+   from the host (laptop), mount it `sudo mount $(cat jhalfs/build_dir.dev) / $PWD/jhalfs/mnt/build_dir`.
+
+   At the end of the build, print the [SBUs](https://www.linuxfromscratch.org/~bdubbs/about.html) report:
+   ```sh
+   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
+   ```
 
 4. After finishing the project exploration, cleanup the loopback device from the host (laptop) with
 
    ```sh
-   for dev in $(losetup -n -l -O NAME -j /build_dir.img); do echo "Detaching $dev" && sudo losetup -d $dev; done
+   for dev in $(losetup -n -l -O NAME -j /vagrant/build_dir.img); do echo "Detaching $dev" && sudo losetup -d $dev; done
    ```
+
+   Do not neglect this step, otherwise you'll keep dangling loopback devices using virtually space on disk.
+
+# Saving intermediate images
+
+In order to save the current work, commit the state of the container, for example after the `make ck_SETUP` target
+in [II. Preparing for the Build](https://www.linuxfromscratch.org/lfs/view/systemd/part2.html), stop and remove the container:
+```sh
+docker commit -m "II. Preparing for the Build" jhalfs jhalfs:part2
+docker save jhalfs:part2 > "jhalfs:part2.tar"
+docker stop jhalfs
+docker rm jhalfs
+```
+
+If the image was saved, and transfered to another host (laptop), it needs to be loaded, and used to start a container:
+```sh
+docker load < "jhalfs:part2.tar"
+JHALFS_IMAGE=jhalfs:part2 docker-compose up -d
+# Attach and mount the loopback device, it is assumed to be free
+docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+```
+
+Other parts, after the `make mk_CHROOT` target in
+[III. Building the LFS Cross Toolchain and Temporary Tools](https://www.linuxfromscratch.org/lfs/view/systemd/part3.html) and
+after the `make mk_BOOT` target in [IV. Building the LFS System](https://www.linuxfromscratch.org/lfs/view/systemd/part4.html)
+are other convenient places to save work. This is useful to split work to deal with time limits of the continuous integration workers.
+```sh
+docker commit -m "III. Building the LFS Cross Toolchain and Temporary Tools" jhalfs jhalfs:part3
+docker save jhalfs:part3 > "jhalfs:part3.tar"
+docker stop jhalfs
+docker rm jhalfs
+```
+
+```sh
+docker commit -m "IV. Building the LFS System" jhalfs jhalfs:part4
+docker save jhalfs:part4 > "jhalfs:part4.tar"
+docker stop jhalfs
+docker rm jhalfs
+```

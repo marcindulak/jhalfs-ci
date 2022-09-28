@@ -67,7 +67,7 @@ DEL_LA_FILES=y
 # CONFIG_BUILD_KERNEL is not set
 # NCURSES5 is not set
 TIMEZONE="GMT"
-LANG="en_US"
+LANG="POSIX"
 # FULL_LOCALE is not set
 PAGE_LETTER=y
 # PAGE_A4 is not set
