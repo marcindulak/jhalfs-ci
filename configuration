@@ -57,7 +57,7 @@ TEST=1
 INSTALL_LOG=y
 # STRIP is not set
 DEL_LA_FILES=y
-# NO_PROGRESS_BAR is not set
+NO_PROGRESS_BAR=y
 # end of Build Settings
 
 #
