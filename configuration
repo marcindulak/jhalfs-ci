@@ -102,8 +102,18 @@ KEYMAP="us"
 REPORT=y
 SAVE_CH5=y
 # COMPARE is not set
-# CONFIG_OPTIMIZE is not set
-OPTIMIZE=0
+CONFIG_OPTIMIZE=y
+
+#
+# Optimization settings
+#
+N_PARALLEL=2
+# OPT_1 is not set
+OPT_2=y
+# REALSBU is not set
+# end of Optimization settings
+
+OPTIMIZE=2
 
 #
 # Internal Settings (WARNING: for jhalfs developers only)

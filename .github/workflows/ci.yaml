@@ -41,11 +41,6 @@ jobs:
           set -eo pipefail
           docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
 
-      - name: configure parallel make jobs
-        run: |
-          set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && for file in \$(find lfs-commands -name \"*gcc*\" -o -name \"*glibc*\"); do echo \$file && sed -i \"s/make -j./make -j2/\" \$file; done'"
-
       # The jhalfs directory is assumed to be unchaged from this point, hence caching it once
       # In other words, the $LFS mounted in the guest (container) is assumed invisible (empty dir) to the host
       - name: write cache jhalfs

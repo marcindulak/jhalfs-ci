@@ -59,12 +59,6 @@ The configuration used by `jhalfs run` is stored in the `configuration` file in 
 
    The references to `/vagrant` in this repository are leftovers from a [vagrant](https://www.vagrantup.com/) based setup.
 
-   If desired, force the make of gcc/glibc to run two jobs in parallel. This is disabled by default, and not recommended.
-   The compilation of gcc/glibc is one of the most time consuming steps.
-   ```sh
-   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && for file in \$(find lfs-commands -name \"*gcc*\" -o -name \"*glibc*\"); do echo \$file && sed -i \"s/make -j./make -j2/\" \$file; done'"
-   ```
-
 3. From this point the individual makefile targets can be executed, for example:
 
    ```sh
