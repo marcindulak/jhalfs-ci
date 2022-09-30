@@ -49,7 +49,7 @@ jobs:
       - name: force parallel make jobs for the kernel
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|make\$|make -j\$(nproc)|\" 1002-kernel'"
+          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|make\$|make -j3|\" 1002-kernel'"
 
       # The jhalfs directory is assumed to be unchaged from this point, hence caching it once
       # In other words, the $LFS mounted in the guest (container) is assumed invisible (empty dir) to the host
@@ -74,7 +74,7 @@ jobs:
           # stty: 'standard input': Inappropriate ioctl for device
           # Terminal too small:  columns x  lines
           # Minimum: 80 columns x 24 lines
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && [ \"\$PS1\" ] && make $TARGET'"
+          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: ck_terminal
 
@@ -110,7 +110,7 @@ jobs:
             build_dir.img
           key: build_dir.img.part2-${{ github.sha }}
 
-  part3lfs:
+  part3luser:
     needs: part2
     runs-on: ubuntu-latest
     steps:
@@ -158,11 +158,11 @@ jobs:
         env:
           TARGET: mk_LUSER
 
-      - name: save jhalfs:part3lfs image
+      - name: save jhalfs:part3luser image
         run: |
           set -eo pipefail
-          docker commit -m "III. Building the LFS Cross Toolchain and Temporary Tools" jhalfs jhalfs:part3lfs
-          docker save jhalfs:part3lfs > jhalfs.tar
+          docker commit -m "III. Building the LFS Cross Toolchain and Temporary Tools" jhalfs jhalfs:part3luser
+          docker save jhalfs:part3luser > jhalfs.tar
           docker stop jhalfs
           docker rm jhalfs
           docker images
@@ -173,17 +173,17 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3lfs-${{ github.sha }}
+          key: jhalfs.tar.part3luser-${{ github.sha }}
 
       - name: write cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3lfs-${{ github.sha }}
+          key: build_dir.img.part3luser-${{ github.sha }}
 
-  part3sudo:
-    needs: part3lfs
+  part3shadow:
+    needs: part3luser
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -201,20 +201,20 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3lfs-${{ github.sha }}
+          key: jhalfs.tar.part3luser-${{ github.sha }}
 
       - name: read cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3lfs-${{ github.sha }}
+          key: build_dir.img.part3luser-${{ github.sha }}
 
-      - name: load jhalfs:part3lfs image
+      - name: load jhalfs:part3luser image
         run: |
           set -eo pipefail
           docker load < jhalfs.tar
-          JHALFS_IMAGE=jhalfs:part3lfs docker-compose up -d
+          JHALFS_IMAGE=jhalfs:part3luser docker-compose up -d
           docker images
           docker ps
 
@@ -230,18 +230,19 @@ jobs:
         env:
           TARGET: mk_SUDO
 
-      - name: make mk_CHROOT
+      - name: make BREAKPOINT=823-shadow
         run: |
           set -eo pipefail
+          # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
           docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
-          TARGET: mk_CHROOT
+          TARGET: BREAKPOINT=823-shadow
 
-      - name: save jhalfs:part3sudo image
+      - name: save jhalfs:part3shadow image
         run: |
           set -eo pipefail
-          docker commit -m "III. Building the LFS Cross Toolchain and Temporary Tools" jhalfs jhalfs:part3sudo
-          docker save jhalfs:part3sudo > jhalfs.tar
+          docker commit -m "III. Building the LFS Cross Toolchain and Temporary Tools" jhalfs jhalfs:part3shadow
+          docker save jhalfs:part3shadow > jhalfs.tar
           docker stop jhalfs
           docker rm jhalfs
           docker images
@@ -252,17 +253,17 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3sudo-${{ github.sha }}
+          key: jhalfs.tar.part3shadow-${{ github.sha }}
 
       - name: write cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3sudo-${{ github.sha }}
+          key: build_dir.img.part3shadow-${{ github.sha }}
 
-  part4:
-    needs: part3sudo
+  part3gcc:
+    needs: part3shadow
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -280,20 +281,166 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3sudo-${{ github.sha }}
+          key: jhalfs.tar.part3shadow-${{ github.sha }}
 
       - name: read cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3sudo-${{ github.sha }}
+          key: build_dir.img.part3shadow-${{ github.sha }}
 
-      - name: load jhalfs:part3sudo image
+      - name: load jhalfs:part3shadow image
         run: |
           set -eo pipefail
-          docker load < "jhalfs:part3sudo.tar"
-          JHALFS_IMAGE=jhalfs:part3sudo docker-compose up -d
+          docker load < jhalfs.tar
+          JHALFS_IMAGE=jhalfs:part3shadow docker-compose up -d
+          docker images
+          docker ps
+
+      - name: attach and mount loopback
+        run: |
+          set -eo pipefail
+          docker-compose exec -T jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+
+      - name: make BREAKPOINT=824-gcc
+        run: |
+          set -eo pipefail
+          # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
+          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+        env:
+          TARGET: BREAKPOINT=824-gcc
+
+      - name: save jhalfs:part3gcc image
+        run: |
+          set -eo pipefail
+          docker commit -m "III. Building the LFS Cross Toolchain and Temporary Tools" jhalfs jhalfs:part3gcc
+          docker save jhalfs:part3gcc > jhalfs.tar
+          docker stop jhalfs
+          docker rm jhalfs
+          docker images
+          docker ps
+
+      - name: write cache jhalfs.tar
+        uses: actions/cache@v3
+        with:
+          path: |
+            jhalfs.tar
+          key: jhalfs.tar.part3gcc-${{ github.sha }}
+
+      - name: write cache build_dir.img
+        uses: actions/cache@v3
+        with:
+          path: |
+            build_dir.img
+          key: build_dir.img.part3gcc-${{ github.sha }}
+
+  part3:
+    needs: part3gcc
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: read cache jhalfs
+        uses: actions/cache@v3
+        with:
+          path: |
+            jhalfs
+          key: jhalfs-${{ github.sha }}
+
+      - name: read cache jhalfs.tar
+        uses: actions/cache@v3
+        with:
+          path: |
+            jhalfs.tar
+          key: jhalfs.tar.part3gcc-${{ github.sha }}
+
+      - name: read cache build_dir.img
+        uses: actions/cache@v3
+        with:
+          path: |
+            build_dir.img
+          key: build_dir.img.part3gcc-${{ github.sha }}
+
+      - name: load jhalfs:part3gcc image
+        run: |
+          set -eo pipefail
+          docker load < jhalfs.tar
+          JHALFS_IMAGE=jhalfs:part3gcc docker-compose up -d
+          docker images
+          docker ps
+
+      - name: attach and mount loopback
+        run: |
+          set -eo pipefail
+          docker-compose exec -T jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+
+      - name: make mk_CHROOT
+        run: |
+          set -eo pipefail
+          # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
+          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+        env:
+          TARGET: mk_CHROOT
+
+      - name: save jhalfs:part3 image
+        run: |
+          set -eo pipefail
+          docker commit -m "III. Building the LFS Cross Toolchain and Temporary Tools" jhalfs jhalfs:part3
+          docker save jhalfs:part3 > jhalfs.tar
+          docker stop jhalfs
+          docker rm jhalfs
+          docker images
+          docker ps
+
+      - name: write cache jhalfs.tar
+        uses: actions/cache@v3
+        with:
+          path: |
+            jhalfs.tar
+          key: jhalfs.tar.part3-${{ github.sha }}
+
+      - name: write cache build_dir.img
+        uses: actions/cache@v3
+        with:
+          path: |
+            build_dir.img
+          key: build_dir.img.part3-${{ github.sha }}
+
+  part4:
+    needs: part3
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: read cache jhalfs
+        uses: actions/cache@v3
+        with:
+          path: |
+            jhalfs
+          key: jhalfs-${{ github.sha }}
+
+      - name: read cache jhalfs.tar
+        uses: actions/cache@v3
+        with:
+          path: |
+            jhalfs.tar
+          key: jhalfs.tar.part3-${{ github.sha }}
+
+      - name: read cache build_dir.img
+        uses: actions/cache@v3
+        with:
+          path: |
+            build_dir.img
+          key: build_dir.img.part3-${{ github.sha }}
+
+      - name: load jhalfs:part3 image
+        run: |
+          set -eo pipefail
+          docker load < "jhalfs:part3.tar"
+          JHALFS_IMAGE=jhalfs:part3 docker-compose up -d
           docker images
           docker ps
 
@@ -343,7 +490,7 @@ jobs:
       - name: print SBUs report
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
+          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
 
       - name: make mk_BLFS_TOOL
         run: |
