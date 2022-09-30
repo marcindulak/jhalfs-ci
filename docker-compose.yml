@@ -5,6 +5,8 @@ services:
     container_name: jhalfs
     image: ${JHALFS_IMAGE:-ubuntu:latest}
     privileged: true
+    stdin_open: true
+    tty: true
     command: >
         sh -c "
         sleep infinity"

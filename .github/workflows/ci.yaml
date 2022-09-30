@@ -27,29 +27,36 @@ jobs:
           docker ps
 
       - name: container up
+        # Avoid: the input device is not a TTY
+        # https://github.com/actions/runner/issues/241#issuecomment-745902718
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "cd /vagrant && bash /vagrant/up.sh"
+          docker-compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/up.sh"
 
       - name: fetch jhalfs commit info
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'cd /home/vagrant/jhalfs && git show --oneline --no-abbrev --shortstat'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'cd /home/vagrant/jhalfs && git show --oneline --no-abbrev --shortstat'"
 
       - name: fetch lfs commit info
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
 
       - name: disable chapter8 gcc tests
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 824-gcc && sed -i \"/test_summary/d\" 824-gcc'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 824-gcc && sed -i \"/test_summary/d\" 824-gcc'"
 
       - name: force parallel make jobs for the kernel
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|make\$|make -j3|\" 1002-kernel'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|make\$|make -j3|\" 1002-kernel'"
 
       # The jhalfs directory is assumed to be unchaged from this point, hence caching it once
       # In other words, the $LFS mounted in the guest (container) is assumed invisible (empty dir) to the host
@@ -61,27 +68,30 @@ jobs:
           key: jhalfs-${{ github.sha }}
 
       - name: make ck_UID
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: ck_UID
 
       - name: make ck_terminal
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
           # Skip ck_terminal target, which fails as below, since it requires an interactive shell.
           # stty: 'standard input': Inappropriate ioctl for device
           # Terminal too small:  columns x  lines
           # Minimum: 80 columns x 24 lines
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: ck_terminal
 
       - name: make mk_SETUP
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_SETUP
 
@@ -147,14 +157,16 @@ jobs:
           docker ps
 
       - name: attach and mount loopback
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
 
       - name: make mk_LUSER
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_LUSER
 
@@ -219,22 +231,25 @@ jobs:
           docker ps
 
       - name: attach and mount loopback
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
 
       - name: make mk_SUDO
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_SUDO
 
       - name: make BREAKPOINT=823-shadow
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: BREAKPOINT=823-shadow
 
@@ -299,15 +314,17 @@ jobs:
           docker ps
 
       - name: attach and mount loopback
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
 
       - name: make BREAKPOINT=824-gcc
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: BREAKPOINT=824-gcc
 
@@ -372,15 +389,17 @@ jobs:
           docker ps
 
       - name: attach and mount loopback
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
 
       - name: make mk_CHROOT
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_CHROOT
 
@@ -445,21 +464,24 @@ jobs:
           docker ps
 
       - name: attach and mount loopback
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
 
       - name: make mk_BOOT
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_BOOT
 
       - name: make create-sbu_du-report
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: create-sbu_du-report
 
@@ -488,20 +510,23 @@ jobs:
           key: build_dir.img.part4-${{ github.sha }}
 
       - name: print SBUs report
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
 
       - name: make mk_BLFS_TOOL
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_BLFS_TOOL
 
       - name: make mk_CUSTOM_TOOLS
+        shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_CUSTOM_TOOLS
