@@ -8,6 +8,8 @@ on:
       - '!**/**'
       - '.github/workflows/ci.yaml'
       - '*.sh'
+      - 'configuration'
+      - 'kernel-config'
       - 'Makefile'
   schedule:
     - cron: '0 3 1 * *'  # First day of the month at 3 a.m.
