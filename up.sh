@@ -48,10 +48,13 @@ bash /vagrant/2.7-mounting-the-new-partition.sh
 DEBIAN_FRONTEND=noninteractive apt-get install -y wget sudo libxml2 libxslt-dev docbook-xml docbook-xsl-nons
 # Install jhalfs dependencies, undocumented in jhalfs
 DEBIAN_FRONTEND=noninteractive apt-get install -y git make python3 gcc libxml2-utils xsltproc
-# Clone jhalfs and copy configuration. The requests tend to fail
+# Clone jhalfs, the requests tend to fail
 # fatal: unable to access 'https://git.linuxfromscratch.org/jhalfs.git/': Could not resolve host: git.linuxfromscratch.org
 su - vagrant -c 'cd /home/vagrant && if test ! -d lhafs; then while ! $(curl -s --max-time 5 -L git.linuxfromscratch.org > /dev/null); do echo Trying to reach git.linuxfromscratch.org ...  && sleep 5; done && git clone https://git.linuxfromscratch.org/jhalfs.git jhalfs; fi'
-su - vagrant -c 'cp /vagrant/configuration /home/vagrant/jhalfs'
+# Copy jhalfs configuration and kernel-config
+su - vagrant -c 'cp -p /vagrant/configuration /home/vagrant/jhalfs'
+su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && mkdir $LFS/sources'
+su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -p /vagrant/kernel-config $LFS/sources'
 # Install lfs host requirements, undocumented in jhalfs
 # See https://www.linuxfromscratch.org/lfs/view/systemd/chapter02/hostreqs.html
 DEBIAN_FRONTEND=noninteractive apt-get install -y bison coreutils diffutils findutils gawk g++ grep gzip m4 make patch perl python3 sed tar texinfo xz-utils

@@ -64,7 +64,8 @@ NO_PROGRESS_BAR=y
 # System configuration
 #
 # HAVE_FSTAB is not set
-# CONFIG_BUILD_KERNEL is not set
+CONFIG_BUILD_KERNEL=y
+CONFIG="$LFS/sources/kernel-config"
 # NCURSES5 is not set
 TIMEZONE="GMT"
 LANG="POSIX"
