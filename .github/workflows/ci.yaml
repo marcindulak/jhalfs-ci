@@ -6,7 +6,7 @@ on:
       - '**'
     paths:
       - '!**/**'
-      - '.github/ci.yaml'
+      - '.github/workflows/ci.yaml'
       - '*.sh'
       - 'Makefile'
   schedule:
@@ -40,6 +40,11 @@ jobs:
         run: |
           set -eo pipefail
           docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
+
+      - name: disable chapter8 gcc tests
+        run: |
+          set -eo pipefail
+          docker-compose exec -T jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 824-gcc && sed -i \"/test_summary/d\" 824-gcc'"
 
       # The jhalfs directory is assumed to be unchaged from this point, hence caching it once
       # In other words, the $LFS mounted in the guest (container) is assumed invisible (empty dir) to the host

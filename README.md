@@ -59,6 +59,12 @@ The configuration used by `jhalfs run` is stored in the `configuration` file in 
 
    The references to `/vagrant` in this repository are leftovers from a [vagrant](https://www.vagrantup.com/) based setup.
 
+   Due to the [6h limit](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits)
+   on a github action runner, disable the chapter8 gcc tests.
+   ```sh
+   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 824-gcc && sed -i \"/test_summary/d\" 824-gcc'"
+   ```
+
 3. From this point the individual makefile targets can be executed, for example:
 
    ```sh
