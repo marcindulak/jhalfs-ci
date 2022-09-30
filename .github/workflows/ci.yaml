@@ -81,10 +81,12 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          # Skip ck_terminal target, which fails as below, since it requires an interactive shell.
+          # Remove ck_terminal target, which fails as below, since it requires an interactive shell.
           # stty: 'standard input': Inappropriate ioctl for device
           # Terminal too small:  columns x  lines
           # Minimum: 80 columns x 24 lines
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && sed -i \"/^all:/s/$TARGET//\" Makefile'"
+          exit
           docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: ck_terminal
