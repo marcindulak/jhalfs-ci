@@ -67,7 +67,7 @@ The configuration used by `jhalfs run` is stored in the `configuration` file in 
 
    Force parallel make jobs for the kernel.
    ```sh
-   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|make\$|make -j\$(nproc)|\" 1002-kernel'"
+   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|make\$|make -j3|\" 1002-kernel'"
    ```   
 
 3. From this point the individual makefile targets can be executed, for example:
