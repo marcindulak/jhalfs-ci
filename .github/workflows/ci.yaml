@@ -513,11 +513,18 @@ jobs:
             build_dir.img
           key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part4
 
-      - name: print SBUs report
+      - name: print sbu report
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report && cp -p \$LFS/jhalfs/*SBU_DU*.report /vagrant'"
+
+      - name: upload sbu report
+        id: upload_sbu_report
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload sbu report
+          path: *SBU_DU*.report
 
       - name: make mk_BLFS_TOOL
         shell: 'script -q -e -c "bash {0}"'

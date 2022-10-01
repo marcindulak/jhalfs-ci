@@ -10,3 +10,4 @@ build_dir.img
 jhalfs
 jhalfs*.tar
 sources
+*SBU_DU*.report
