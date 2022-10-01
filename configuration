@@ -63,7 +63,8 @@ DEL_LA_FILES=y
 #
 # System configuration
 #
-# HAVE_FSTAB is not set
+HAVE_FSTAB=y
+FSTAB="$LFS/sources/fstab"
 CONFIG_BUILD_KERNEL=y
 CONFIG="$LFS/sources/kernel-config"
 # NCURSES5 is not set
@@ -106,13 +107,13 @@ SAVE_CH5=y
 CONFIG_OPTIMIZE=y
 
 #
-# Optimization settings
+# Parallelization and Optimization settings
 #
 N_PARALLEL=3
 # OPT_1 is not set
 OPT_2=y
 # REALSBU is not set
-# end of Optimization settings
+# end of Parallelization and Optimization settings
 
 OPTIMIZE=2
 

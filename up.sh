@@ -51,11 +51,14 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y git make python3 gcc libxml2-u
 # Clone jhalfs, the requests tend to fail
 # fatal: unable to access 'https://git.linuxfromscratch.org/jhalfs.git/': Could not resolve host: git.linuxfromscratch.org
 su - vagrant -c 'cd /home/vagrant && if test ! -d lhafs; then while ! $(curl -s --max-time 5 -L git.linuxfromscratch.org > /dev/null); do echo Trying to reach git.linuxfromscratch.org ...  && sleep 5; done && git clone https://git.linuxfromscratch.org/jhalfs.git jhalfs; fi'
-# Copy jhalfs configuration and kernel-config
+# Copy jhalfs configuration, fstab and kernel-config
 su - vagrant -c 'cp -pv /vagrant/configuration /home/vagrant/jhalfs'
 # https://www.linuxfromscratch.org/lfs/view/systemd/chapter03/introduction.html
 su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && sudo mkdir -v $LFS/sources'
 su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && sudo chmod -v a+wt $LFS/sources'
+# https://www.linuxfromscratch.org/lfs/view/systemd/chapter10/fstab.html
+su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -pv /vagrant/fstab $LFS/sources'
+# https://www.linuxfromscratch.org/lfs/view/systemd/chapter10/kernel.html
 su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -pv /vagrant/kernel-config $LFS/sources'
 # Install lfs host requirements, undocumented in jhalfs
 # See https://www.linuxfromscratch.org/lfs/view/systemd/chapter02/hostreqs.html
