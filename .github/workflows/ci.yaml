@@ -67,7 +67,7 @@ jobs:
         with:
           path: |
             jhalfs
-          key: jhalfs-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs
 
       - name: make ck_UID
         shell: 'script -q -e -c "bash {0}"'
@@ -115,14 +115,14 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part2-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part2
 
       - name: write cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part2-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part2
 
   part3luser:
     needs: part2
@@ -136,21 +136,21 @@ jobs:
         with:
           path: |
             jhalfs
-          key: jhalfs-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs
 
       - name: read cache jhalfs.tar
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part2-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part2
 
       - name: read cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part2-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part2
 
       - name: load jhalfs:part2 image
         run: |
@@ -189,14 +189,14 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3luser-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3luser
 
       - name: write cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3luser-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3luser
 
   part3shadow:
     needs: part3luser
@@ -210,21 +210,21 @@ jobs:
         with:
           path: |
             jhalfs
-          key: jhalfs-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs
 
       - name: read cache jhalfs.tar
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3luser-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3luser
 
       - name: read cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3luser-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3luser
 
       - name: load jhalfs:part3luser image
         run: |
@@ -272,14 +272,14 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3shadow-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3shadow
 
       - name: write cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3shadow-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3shadow
 
   part3gcc:
     needs: part3shadow
@@ -293,21 +293,21 @@ jobs:
         with:
           path: |
             jhalfs
-          key: jhalfs-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs
 
       - name: read cache jhalfs.tar
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3shadow-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3shadow
 
       - name: read cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3shadow-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3shadow
 
       - name: load jhalfs:part3shadow image
         run: |
@@ -347,14 +347,14 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3gcc-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3gcc
 
       - name: write cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3gcc-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3gcc
 
   part3:
     needs: part3gcc
@@ -368,21 +368,21 @@ jobs:
         with:
           path: |
             jhalfs
-          key: jhalfs-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs
 
       - name: read cache jhalfs.tar
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3gcc-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3gcc
 
       - name: read cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3gcc-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3gcc
 
       - name: load jhalfs:part3gcc image
         run: |
@@ -422,14 +422,14 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3
 
       - name: write cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3
 
   part4:
     needs: part3
@@ -443,21 +443,21 @@ jobs:
         with:
           path: |
             jhalfs
-          key: jhalfs-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs
 
       - name: read cache jhalfs.tar
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part3-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3
 
       - name: read cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part3-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3
 
       - name: load jhalfs:part3 image
         run: |
@@ -504,14 +504,14 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: jhalfs.tar.part4-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part4
 
       - name: write cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: build_dir.img.part4-${{ github.sha }}
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part4
 
       - name: print SBUs report
         shell: 'script -q -e -c "bash {0}"'
