@@ -31,4 +31,4 @@ do
 done
 
 TARNAME=$BACKUP_NAME-$(date +%Y-%m-%d-T-%Hh%M).tar
-tar --exclude ./jhalfs -cvf jhalfs/$TARNAME .
+tar --exclude ./jhalfs --exclude ./sources --exclude ./vagrant -cpvf jhalfs/$TARNAME .
