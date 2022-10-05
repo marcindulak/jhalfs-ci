@@ -401,25 +401,6 @@ jobs:
         env:
           TARGET: mk_CHROOT
 
-      - name: compress chapter5 backup
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && xz chapter5-*.tar"
-
-      - name: copy chapter5 backup to /vagrant
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -p \$LFS/jhalfs/chapter5-*.tar.xz /vagrant"
-
-      - name: upload chapter5
-        id: upload_chapter5
-        uses: actions/upload-artifact@v3
-        with:
-          name: upload chapter5
-          path: chapter5-*.tar.xz
-
       - name: save jhalfs:part3 image
         run: |
           set -eo pipefail
@@ -557,7 +538,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && xz chapter10-*.tar"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && xz --threads=0 chapter10-*.tar"
 
       - name: copy chapter10 backup to /vagrant
         shell: 'script -q -e -c "bash {0}"'
