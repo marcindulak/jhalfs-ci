@@ -70,6 +70,9 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y bison coreutils diffutils find
 # Downloading of patches tends to fail, run the scripts a few times
 # Resolving www.linuxfromscratch.org (www.linuxfromscratch.org)... failed: Temporary failure in name resolution.
 su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd /home/vagrant/jhalfs && while ! $(curl -s --max-time 5 -L www.linuxfromscratch.org > /dev/null); do echo Trying to reach www.linuxfromscratch.org ...  && sleep 5; done && yes yes | ./jhalfs run'
+# Use invisible-island.net, since invisible-mirror.net tends to give "Connection timed out."
+# See https://lists.linuxfromscratch.org/sympa/arc/lfs-support/2022-09/msg00045.html
+su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd /home/vagrant/jhalfs && cd $LFS/jhalfs && for file in $(grep invisible-mirror -rl . | xargs); do echo "sed -i \"s/invisible-mirror/invisible-island/\" $file" && sed -i "s/invisible-mirror/invisible-island/" $file; done'
 su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd /home/vagrant/jhalfs && while ! $(curl -s --max-time 5 -L www.linuxfromscratch.org > /dev/null); do echo Trying to reach www.linuxfromscratch.org ...  && sleep 5; done && yes yes | ./jhalfs run'
 su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd /home/vagrant/jhalfs && while ! $(curl -s --max-time 5 -L www.linuxfromscratch.org > /dev/null); do echo Trying to reach www.linuxfromscratch.org ...  && sleep 5; done && yes yes | ./jhalfs run'
 # Extract the jhalfs make targets
