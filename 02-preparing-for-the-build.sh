@@ -41,6 +41,9 @@ cd jhalfs
 # See https://www.linuxfromscratch.org/lfs/view/development/chapter02/creatingpartition.html
 apt-get install -y apt-utils parted udev
 bash /vagrant/02.4-creating-a-new-partition.sh
+# Create loopback partition block devices with mknod
+# https://github.com/moby/moby/issues/27886#issuecomment-417074845
+bash /vagrant/02.7-docker-loopback-partition-mknod.sh
 # Format and mount the partition
 # See https://www.linuxfromscratch.org/lfs/view/development/chapter02/mounting.html
 bash /vagrant/02.7-mounting-the-new-partition.sh
