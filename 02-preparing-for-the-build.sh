@@ -40,10 +40,10 @@ cd jhalfs
 # Create device and parition it to use for the /mnt/build_dir mount point
 # See https://www.linuxfromscratch.org/lfs/view/development/chapter02/creatingpartition.html
 apt-get install -y apt-utils parted udev
-bash /vagrant/2.4-creating-a-new-partition.sh
+bash /vagrant/02.4-creating-a-new-partition.sh
 # Format and mount the partition
 # See https://www.linuxfromscratch.org/lfs/view/development/chapter02/mounting.html
-bash /vagrant/2.7-mounting-the-new-partition.sh
+bash /vagrant/02.7-mounting-the-new-partition.sh
 # Install dependencies mentioned in jhalfs README 2. PREREQUISITIES
 DEBIAN_FRONTEND=noninteractive apt-get install -y wget sudo libxml2 libxslt-dev docbook-xml docbook-xsl-nons
 # Install jhalfs dependencies, undocumented in jhalfs

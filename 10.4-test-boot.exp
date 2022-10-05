@@ -1,0 +1,22 @@
+#!/usr/bin/expect
+
+# Wait for boot
+set timeout 30
+
+# Start the guest VM
+spawn qemu-system-x86_64 -curses -m 256M -smp 1 -drive file=build_dir.img,format=raw,if=virtio -cpu host -machine type=pc,accel=kvm
+
+expect {
+  "login: " { send "root\n" }
+  timeout   { puts "Timeout during boot" ; exit 1 }
+}
+
+expect "Password: "
+send "root\n"
+
+expect "bash"
+send "cat /etc/*release | grep PRETTY\n"
+
+expect "Linux From Scratch"
+send "shutdown -h now\n"
+
