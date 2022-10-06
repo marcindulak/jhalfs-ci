@@ -66,6 +66,11 @@ su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -pv /vagrant/kernel-conf
 # Install lfs host requirements, undocumented in jhalfs
 # See https://www.linuxfromscratch.org/lfs/view/systemd/chapter02/hostreqs.html
 DEBIAN_FRONTEND=noninteractive apt-get install -y bison coreutils diffutils findutils gawk g++ grep gzip m4 make patch perl python3 sed tar texinfo xz-utils
+# Install extra tools needed for parsing jhalfs makefile BREAKPOINT output
+# See https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-10/msg00013.html
+DEBIAN_FRONTEND=noninteractive apt-get install -y ack colorized-logs
+# Install tools needed for qemu image conversion
+DEBIAN_FRONTEND=noninteractive apt-get install -y qemu-utils
 # Generate the jhalfs makefiles under $LFS
 # Downloading of patches tends to fail, run the scripts a few times
 # Resolving www.linuxfromscratch.org (www.linuxfromscratch.org)... failed: Temporary failure in name resolution.
