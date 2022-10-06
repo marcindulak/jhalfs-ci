@@ -49,7 +49,8 @@ chroot $LFS /usr/bin/env -i HOME=/root TERM="$TERM" PS1='(lfs chroot) \u:\w\$ ' 
 grub-install --target i386-pc $(losetup -n -l -O NAME -j /vagrant/build_dir.img)
 
 # set root password
-usermod --password root root
+# https://unix.stackexchange.com/questions/306903/usermod-to-change-user-password-is-not-working
+usermod --password $(openssl passwd -1 root) root
 
 # Create grub.conf
 # See the original one at https://www.linuxfromscratch.org/lfs/view/systemd/chapter10/grub.html
