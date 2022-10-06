@@ -13,26 +13,10 @@ then
     exit 1
 fi
 
-# Umount virtual kernel filesystems
-mountpoint -q $LFS/dev/shm && umount -v $LFS/dev/shm
-mountpoint -q $LFS/dev/pts && umount -v $LFS/dev/pts
-for mp in sys proc run dev;
-do
-    mountpoint -q $LFS/$mp && umount -v $LFS/$mp
-done
+# See https://www.linuxfromscratch.org/lfs/view/systemd/chapter10/grub.html
 
-# Mount virtual kernel filesystems
-# https://www.linuxfromscratch.org/lfs/view/systemd/chapter07/kernfs.html
-mount -v --bind /dev $LFS/dev
-mount -v --bind /dev/pts $LFS/dev/pts
-mount -vt proc proc $LFS/proc
-mount -vt sysfs sysfs $LFS/sys
-mount -vt tmpfs tmpfs $LFS/run
-if [ -h $LFS/dev/shm ]; then
-  mkdir -pv $LFS/$(readlink $LFS/dev/shm)
-else
-  mount -t tmpfs -o nosuid,nodev tmpfs $LFS/dev/shm
-fi
+# Mount kernel virtual filesystems before entering chroot
+bash 07.3-mount-kernel-virtual-filesystems.sh
 
 # Umount and mount the image file
 mkdir -pv $LFS/vagrant

@@ -7,9 +7,17 @@ then
     exit 1
 fi
 
+if [ -z "$1" ]
+then
+    echo "Error: image size in GB must be provided, e.g. 10"
+    exit 1
+fi
+
+IMAGE_SIZE=$1
+
 for dev in $(losetup -n -l -O NAME -j /vagrant/build_dir.img); do echo "Detaching $dev" && losetup -d $dev; done
 rm -f /vagrant/build_dir.img
-dd if=/dev/zero of=/vagrant/build_dir.img bs=1024M count=16
+dd if=/dev/zero of=/vagrant/build_dir.img bs=1024M count=$IMAGE_SIZE
 # /vagrant synced-folder cannot be used for loop devices, but docker allows for this
 # losetup: /vagrant/build_dir.img: failed to set up loop device: No such file or directory
 losetup -fP /vagrant/build_dir.img

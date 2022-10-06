@@ -1,24 +1,20 @@
-[![ci](https://github.com/marcindulak/jhalfs-ci/workflows/ci/badge.svg)](https://github.com/marcindulak/jhalfs-ci/actions/workflows/ci.yaml)
+[![ci](https://github.com/marcindulak/jhalfs-ci/workflows/linux-gha/badge.svg)](https://github.com/marcindulak/jhalfs-ci/actions/workflows/linux-gha.yaml)
 
 # Description
-
-**Warning**: this project uses privileged containers and may make your host (laptop) non-bootable.
 
 This project performs Automated Linux From Scratch [jhalfs](https://www.linuxfromscratch.org/alfs) using docker.
 The approach is similar to the one taken by [LFScm](https://github.com/masmullin2000/LFScm): lfs is built
 inside of a docker container on a loopback device, and the resulting image booted in qemu.
 
+**Warning**: this project uses privileged containers, and may make your host (laptop) non-bootable if used improperly.
+
 The [jhalfs](https://www.linuxfromscratch.org/alfs) is a set of scripts which retrieves
 the Linux From Scratch [lfs](https://www.linuxfromscratch.org/lfs/) book, extracts
 the commands by parsing the chapter's XML, and generates scripts managed using a makefile.
+The [systemd version of the lfs](https://www.linuxfromscratch.org/lfs/view/systemd/) book is used,
+as systemd is the standard nowadays.
 
-The [systemd version of the lfs](https://www.linuxfromscratch.org/lfs/view/systemd/) book is used, as systemd is the standard nowadays.
-At the time of writing, chapter [10. Making the LFS System Bootable](https://www.linuxfromscratch.org/lfs/view/systemd/chapter10/chapter10.html)
-is not completely executed by the scripts. In particular, the `/etc/fstab` file is not populated with correct values and boot loader is not overwritten.
-It is important to **not** perform these steps as the docker container has the host (laptop) access,
-and errors may make the host (laptop) non-bootable.
-
-**Note**: the setup requires about 16GB of disk space for the loopback file.
+**Note**: the setup requires about 16GB of disk space (a bit less than twice the size of the loopback file).
 Both Intel and Apple silicon (untested) processors are supported.
 
 # Setup
@@ -57,7 +53,7 @@ After the preliminary steps are done, `jhalfs run` is invoked to generate the sc
 The configuration used by `jhalfs run` is stored in the `configuration` file in the root folder of this repository.
 
    ```sh
-   docker-compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/02-preparing-for-the-build.sh"
+   docker-compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/02-prepare-for-the-build.sh"
    ```
 
    Fetch the commits of the jhalfs and lfs books with:
@@ -91,14 +87,6 @@ The configuration used by `jhalfs run` is stored in the `configuration` file in 
    docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
    ```
 
-4. After finishing the project exploration, cleanup the loopback device from the host (laptop) with
-
-   ```sh
-   for dev in $(losetup -n -l -O NAME -j /vagrant/build_dir.img); do echo "Detaching $dev" && sudo losetup -d $dev; done
-   ```
-
-   Do not neglect this step, otherwise you'll keep dangling loopback devices using virtually space on disk.
-
 ## Booting the system
 
 The backups of the lfs filesystem are present in the root directory of this project.
@@ -112,7 +100,18 @@ They can be used to boot a system. In order to boot the created system, https://
 
    Note that when qemu is used the `root` device is `/dev/vda1`.
 
-2. Backup the system, see [chapter7](https://www.linuxfromscratch.org/lfs/view/systemd/chapter07/cleanup.html):
+2. Test the system boot, from the host (laptop):
+
+   ```sh
+   sudo chown $USER build_dir.img
+   JHALFS_ARCH=$(uname -m) expect -f 10.4-test-boot.exp
+   ```
+
+   The expect script will boot the system, login as root using the password configured in step 2. above,
+   and print the pretty release of the system. It should contain "Linux From Scratch".
+   See the expect script for a command used to launch the system using `qemu-system`.
+
+3. If desired, backup the system, see [chapter7](https://www.linuxfromscratch.org/lfs/view/systemd/chapter07/cleanup.html):
 
    ```sh
    docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && bash /vagrant/10.4-save-backup.sh chapter10"
@@ -124,16 +123,14 @@ They can be used to boot a system. In order to boot the created system, https://
    docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && cp -p jhalfs/chapter10*.tar* /vagrant"
    ```
 
-3. Test the system, from the host (laptop):
+4. **Only** after finishing the project exploration, stop the container, and cleanup the loopback device from the host (laptop):
 
    ```sh
-   sudo chown $USER build_dir.img
-   expect -f 10.4-test-boot.exp
+   docker-compose stop jhalfs
+   for dev in $(losetup -n -l -O NAME -j /vagrant/build_dir.img); do echo "Detaching $dev" && sudo losetup -d $dev; done
    ```
 
-   The expect script will boot the system, login as root using the password configured in step 2. above,
-   and print the pretty release of the system. It should contain "Linux From Scratch".
-   See the expect script for a command used to launch the system using `qemu-system`.
+   Do not neglect this step, otherwise you'll keep dangling loopback devices using virtually space on disk.
 
 # Saving intermediate images
 

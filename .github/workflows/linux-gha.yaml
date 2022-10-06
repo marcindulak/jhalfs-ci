@@ -1,4 +1,4 @@
-name: ci
+name: linux-gha
 
 on:
   push:
@@ -6,9 +6,12 @@ on:
       - '**'
     paths:
       - '!**/**'
-      - '.github/workflows/ci.yaml'
+      - '.github/workflows/linux-gha.yaml'
+      - '*.exp'
       - '*.sh'
+      - 'azure-pipelines.yml'
       - 'configuration'
+      - 'fstab'
       - 'kernel-config'
       - 'Makefile'
   schedule:
@@ -20,6 +23,15 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
+      - name: increase runner disk space
+        # https://github.com/actions/runner-images/issues/2606
+        run: |
+          set -eo pipefail
+          df -h
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          df -h
 
       - name: docker-compose up
         run: |
@@ -34,7 +46,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/up.sh"
+          docker-compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/02-preparing-for-the-build.sh"
 
       - name: fetch jhalfs commit info
         shell: 'script -q -e -c "bash {0}"'
@@ -125,6 +137,15 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
+      - name: increase runner disk space
+        # https://github.com/actions/runner-images/issues/2606
+        run: |
+          set -eo pipefail
+          df -h
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          df -h
+
       - name: read cache jhalfs
         uses: actions/cache@v3
         with:
@@ -158,7 +179,12 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "cat /etc/fstab"
+          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker-compose exec jhalfs bash -c "mount -v -a"
 
       - name: make mk_LUSER
         shell: 'script -q -e -c "bash {0}"'
@@ -199,6 +225,15 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
+      - name: increase runner disk space
+        # https://github.com/actions/runner-images/issues/2606
+        run: |
+          set -eo pipefail
+          df -h
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          df -h
+
       - name: read cache jhalfs
         uses: actions/cache@v3
         with:
@@ -232,7 +267,12 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "cat /etc/fstab"
+          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker-compose exec jhalfs bash -c "mount -v -a"
 
       - name: make mk_SUDO
         shell: 'script -q -e -c "bash {0}"'
@@ -246,10 +286,10 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-10/msg00013.html
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=$BREAKPOINT | ansi2txt | ack --passthru \"stopped at $BREAKPOINT as requested\"'"
         env:
-          TARGET: BREAKPOINT=823-shadow
+          BREAKPOINT: 823-shadow
 
       - name: save jhalfs:part3shadow image
         run: |
@@ -281,6 +321,15 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
+      - name: increase runner disk space
+        # https://github.com/actions/runner-images/issues/2606
+        run: |
+          set -eo pipefail
+          df -h
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          df -h
 
       - name: read cache jhalfs
         uses: actions/cache@v3
@@ -315,16 +364,27 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "cat /etc/fstab"
+          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker-compose exec jhalfs bash -c "mount -v -a"
+
+      - name: mount kernel virtual filesystems
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-mount-kernel-virtual-filesystems.sh"
 
       - name: make BREAKPOINT=824-gcc
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-10/msg00013.html
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=$BREAKPOINT | ansi2txt | ack --passthru \"stopped at $BREAKPOINT as requested\"'"
         env:
-          TARGET: BREAKPOINT=824-gcc
+          BREAKPOINT: 824-gcc
 
       - name: save jhalfs:part3gcc image
         run: |
@@ -356,6 +416,15 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
+      - name: increase runner disk space
+        # https://github.com/actions/runner-images/issues/2606
+        run: |
+          set -eo pipefail
+          df -h
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          df -h
 
       - name: read cache jhalfs
         uses: actions/cache@v3
@@ -390,7 +459,18 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "cat /etc/fstab"
+          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker-compose exec jhalfs bash -c "mount -v -a"
+
+      - name: mount kernel virtual filesystems
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-mount-kernel-virtual-filesystems.sh"
 
       - name: make mk_CHROOT
         shell: 'script -q -e -c "bash {0}"'
@@ -432,6 +512,15 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
+      - name: increase runner disk space
+        # https://github.com/actions/runner-images/issues/2606
+        run: |
+          set -eo pipefail
+          df -h
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          df -h
+
       - name: read cache jhalfs
         uses: actions/cache@v3
         with:
@@ -456,7 +545,7 @@ jobs:
       - name: load jhalfs:part3 image
         run: |
           set -eo pipefail
-          docker load < "jhalfs:part3.tar"
+          docker load < jhalfs.tar
           JHALFS_IMAGE=jhalfs:part3 docker-compose up -d
           docker images
           docker ps
@@ -465,7 +554,18 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker-compose exec jhalfs bash -c "cat /etc/fstab"
+          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker-compose exec jhalfs bash -c "mount -v -a"
+
+      - name: mount kernel virtual filesystems
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-mount-kernel-virtual-filesystems.sh"
 
       - name: make mk_BOOT
         shell: 'script -q -e -c "bash {0}"'
@@ -483,13 +583,143 @@ jobs:
         env:
           TARGET: create-sbu_du-report
 
+      - name: print sbu report
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
+
+      - name: copy sbu report to /vagrant
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -p \$LFS/jhalfs/*SBU_DU*.report /vagrant'"
+
+      - name: upload sbu report
+        if: always()
+        id: upload_sbu_report
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload sbu report
+          path: ${{ github.workspace }}/*SBU_DU*.report
+
+      - name: copy installed-files to /vagrant
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -rp \$LFS/jhalfs/installed-files /vagrant && cd /vagrant && tar Jcf installed-files.tar.xz installed-files'"
+
+      - name: upload installed-files.tar.xz
+        if: always()
+        id: upload_installed_files
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload installed-files.tar.xz
+          path: ${{ github.workspace }}/installed-files.tar.xz
+
+      - name: copy logs to /vagrant
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -rp \$LFS/jhalfs/logs /vagrant && cd /vagrant && tar Jcf logs.tar.xz logs'"
+
+      - name: upload logs.tar.xz
+        if: always()
+        id: upload_logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload logs.tar.xz
+          path: ${{ github.workspace }}/logs.tar.xz
+
+      - name: copy test-logs to /vagrant
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -rp \$LFS/jhalfs/test-logs /vagrant && cd /vagrant && tar Jcf test-logs.tar.xz test-logs'"
+
+      - name: upload test-logs.tar.xz
+        if: always()
+        id: upload_test_logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload test-logs.tar.xz
+          path: ${{ github.workspace }}/test-logs.tar.xz
+
+      - name: configure grub
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c 'source /vagrant/jhalfs/jhalfs.sh && cd /vagrant && bash 10.4-configure-grub.sh'
+
+      - name: install the lfs boot test dependencies
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          sudo apt-get update
+          sudo apt-get install -y qemu-kvm expect
+
+      - name: compress build_dir.raw to ~3GB
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'cd /vagrant && time xz --threads=0 --keep build_dir.raw && ls -lh build_dir.raw.xz'"
+
+      - name: upload build_dir.raw.xz
+        if: always()
+        id: upload_build_dir_raw
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload build_dir.raw.xz
+          path: ${{ github.workspace }}/build_dir.raw.xz
+
+      - name: test lfs boot
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          sudo chown $USER build_dir.raw
+          JHALFS_ARCH=$(uname -m) expect -f 10.4-test-boot.exp
+
+      - name: create chapter10 backup
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && bash /vagrant/10.4-save-backup.sh $CHAPTER"
+        env:
+          CHAPTER: chapter10
+
+      - name: compress chapter10 backup to ~1GB
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && time xz --threads=0 chapter10-*.tar && ls -lh chapter10-*.tar.xz"
+
+      - name: move chapter10 backup to /vagrant
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && mv \$LFS/jhalfs/chapter10-*.tar.xz /vagrant'"
+
+      # chapter*tar.xz is smaller, but use the build_dir.raw image instead to save github action storage
+      - name: upload chapter10
+        id: upload_chapter10
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload chapter10
+          path: ${{ github.workspace }}/chapter10-*.tar.xz
+
       - name: save jhalfs:part4 image
         run: |
           set -eo pipefail
           docker commit -m "IV. Building the LFS System" jhalfs jhalfs:part4
           docker save jhalfs:part4 > jhalfs.tar
-          #docker stop jhalfs  # This is the last part of the book run, don't stop the container
-          #docker rm jhalfs
+          docker stop jhalfs
+          docker rm jhalfs
           docker images
           docker ps
 
@@ -506,52 +736,6 @@ jobs:
           path: |
             build_dir.img
           key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part4
-
-      - name: print sbu report
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
-
-      - name: copy sbu report to /vagrant
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -p \$LFS/jhalfs/*SBU_DU*.report /vagrant'"
-
-      - name: upload sbu report
-        id: upload_sbu_report
-        uses: actions/upload-artifact@v3
-        with:
-          name: upload sbu report
-          path: *SBU_DU*.report
-
-      - name: create chapter10 backup
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && bash /vagrant/save-backup.sh $CHAPTER"
-        env:
-          CHAPTER: chapter10
-
-      - name: compress chapter10 backup
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && xz --threads=0 chapter10-*.tar"
-
-      - name: copy chapter10 backup to /vagrant
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -p \$LFS/jhalfs/chapter10-*.tar.xz /vagrant"
-
-      - name: upload chapter10
-        id: upload_chapter10
-        uses: actions/upload-artifact@v3
-        with:
-          name: upload chapter10
-          path: chapter10-*.tar.xz
 
       - name: make mk_BLFS_TOOL
         shell: 'script -q -e -c "bash {0}"'
