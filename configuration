@@ -102,7 +102,7 @@ KEYMAP="us"
 # Advanced Features
 #
 REPORT=y
-SAVE_CH5=y
+SAVE_CH5=n
 # COMPARE is not set
 CONFIG_OPTIMIZE=y
 
