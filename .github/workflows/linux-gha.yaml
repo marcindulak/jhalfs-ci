@@ -519,11 +519,11 @@ jobs:
         env:
           TARGET: mk_CHROOT
 
-      - name: save jhalfs:part3 image
+      - name: save jhalfs:part3remaining image
         run: |
           set -eo pipefail
-          docker commit -m "III. Building the LFS Cross Toolchain and Temporary Tools" jhalfs jhalfs:part3
-          docker save jhalfs:part3 > jhalfs.tar
+          docker commit -m "III. Building the LFS Cross Toolchain and Temporary Tools" jhalfs jhalfs:part3remaining
+          docker save jhalfs:part3remaining > jhalfs.tar
           docker stop jhalfs
           docker rm jhalfs
           docker images
@@ -589,11 +589,11 @@ jobs:
         env:
           SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
-      - name: load jhalfs:part3 image
+      - name: load jhalfs:part3remaining image
         run: |
           set -eo pipefail
           docker load < jhalfs.tar
-          JHALFS_IMAGE=jhalfs:part3 docker-compose up -d
+          JHALFS_IMAGE=jhalfs:part3remaining docker-compose up -d
           docker images
           docker ps
 
