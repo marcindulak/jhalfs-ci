@@ -147,25 +147,36 @@ jobs:
           df -h
 
       - name: read cache jhalfs
+        # https://github.com/actions/cache/issues/720
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             jhalfs
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs
+        # https://github.com/actions/cache/issues/810
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache jhalfs.tar
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part2
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache build_dir.img
         uses: actions/cache@v3
+        timeout-minutes: 10
         with:
           path: |
             build_dir.img
           key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part2
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: load jhalfs:part2 image
         run: |
@@ -235,25 +246,34 @@ jobs:
           df -h
 
       - name: read cache jhalfs
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             jhalfs
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache jhalfs.tar
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3luser
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache build_dir.img
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
           key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3luser
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: load jhalfs:part3luser image
         run: |
@@ -332,25 +352,34 @@ jobs:
           df -h
 
       - name: read cache jhalfs
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             jhalfs
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache jhalfs.tar
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3shadow
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache build_dir.img
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
           key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3shadow
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: load jhalfs:part3shadow image
         run: |
@@ -427,25 +456,34 @@ jobs:
           df -h
 
       - name: read cache jhalfs
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             jhalfs
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache jhalfs.tar
+        timeout-minutes: 10      
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3gcc
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache build_dir.img
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
           key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3gcc
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: load jhalfs:part3gcc image
         run: |
@@ -522,25 +560,34 @@ jobs:
           df -h
 
       - name: read cache jhalfs
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             jhalfs
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache jhalfs.tar
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             jhalfs.tar
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3remaining
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache build_dir.img
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
           key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3remaining
+        env:
+          SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: load jhalfs:part3 image
         run: |
