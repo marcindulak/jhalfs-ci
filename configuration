@@ -43,7 +43,7 @@ SERVER="http://ftp.osuosl.org"
 #
 # Build Settings
 #
-CONFIG_TESTS=n
+CONFIG_TESTS=y
 
 #
 # Test settings
