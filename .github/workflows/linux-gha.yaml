@@ -642,7 +642,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -p \$LFS/jhalfs/*SBU_DU*.report /vagrant'"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -p \$LFS/jhalfs/*SBU_DU*.report /vagrant"
 
       - name: upload sbu report
         if: always()
@@ -657,7 +657,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -rp \$LFS/jhalfs/installed-files /vagrant && cd /vagrant && tar Jcf installed-files.tar.xz installed-files'"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -rp \$LFS/jhalfs/installed-files /vagrant && cd /vagrant && tar Jcf installed-files.tar.xz installed-files"
 
       - name: upload installed-files.tar.xz
         if: always()
@@ -672,7 +672,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -rp \$LFS/jhalfs/logs /vagrant && cd /vagrant && tar Jcf logs.tar.xz logs'"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -rp \$LFS/jhalfs/logs /vagrant && cd /vagrant && tar Jcf logs.tar.xz logs"
 
       - name: upload logs.tar.xz
         if: always()
@@ -687,7 +687,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cp -rp \$LFS/jhalfs/test-logs /vagrant && cd /vagrant && tar Jcf test-logs.tar.xz test-logs'"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -rp \$LFS/jhalfs/test-logs /vagrant && cd /vagrant && tar Jcf test-logs.tar.xz test-logs"
 
       - name: upload test-logs.tar.xz
         if: always()
@@ -715,7 +715,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cd /vagrant && time xz --threads=0 --keep build_dir.raw && ls -lh build_dir.raw.xz'"
+          docker-compose exec jhalfs bash -c "cd /vagrant && time xz --threads=0 --keep build_dir.raw && ls -lh build_dir.raw.xz"
 
       - name: upload build_dir.raw.xz
         if: always()
@@ -750,7 +750,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && mv \$LFS/jhalfs/chapter10-*.tar.xz /vagrant'"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && mv \$LFS/jhalfs/chapter10-*.tar.xz /vagrant"
 
       # chapter*tar.xz is smaller, but use the build_dir.raw image instead to save github action storage
       - name: upload chapter10
