@@ -710,26 +710,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y qemu-kvm expect
 
-      - name: compress build_dir.raw to ~3GB
+      - name: compress build_dir.img to ~3GB
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "cd /vagrant && time xz --threads=0 --keep build_dir.raw && ls -lh build_dir.raw.xz"
+          docker-compose exec jhalfs bash -c "cd /vagrant && time xz --threads=0 --keep build_dir.img && ls -lh build_dir.img.xz"
 
-      - name: upload build_dir.raw.xz
+      - name: upload build_dir.img.xz
         if: always()
-        id: upload_build_dir_raw
+        id: upload_build_dir_img
         uses: actions/upload-artifact@v3
         with:
-          name: upload build_dir.raw.xz
-          path: ${{ github.workspace }}/build_dir.raw.xz
+          name: upload build_dir.img.xz
+          path: ${{ github.workspace }}/build_dir.img.xz
 
       - name: test lfs boot
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          sudo chown $USER build_dir.raw
+          sudo chown $USER build_dir.img
           JHALFS_ARCH=$(uname -m) expect -f 10.4-test-boot.exp
 
       - name: create chapter10 backup
@@ -752,7 +752,7 @@ jobs:
           set -eo pipefail
           docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && mv \$LFS/jhalfs/chapter10-*.tar.xz /vagrant"
 
-      # chapter*tar.xz is smaller, but use the build_dir.raw image instead to save github action storage
+      # chapter*tar.xz is smaller, but use the build_dir.img image instead to save github action storage
       - name: upload chapter10
         id: upload_chapter10
         uses: actions/upload-artifact@v3
