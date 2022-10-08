@@ -410,7 +410,7 @@ jobs:
             build_dir.img
           key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3gcc
 
-  part3:
+  part3remaining:
     needs: part3gcc
     runs-on: ubuntu-latest
     steps:
@@ -496,17 +496,17 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3remaining
 
       - name: write cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3remaining
 
   part4:
-    needs: part3
+    needs: part3remaining
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -533,14 +533,14 @@ jobs:
         with:
           path: |
             jhalfs.tar
-          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3
+          key: ${{ runner.os }}-${{ github.sha }}-jhalfs.tar.part3remaining
 
       - name: read cache build_dir.img
         uses: actions/cache@v3
         with:
           path: |
             build_dir.img
-          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3
+          key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part3remaining
 
       - name: load jhalfs:part3 image
         run: |
