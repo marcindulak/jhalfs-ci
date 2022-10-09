@@ -15,13 +15,13 @@ fi
 
 # See https://www.linuxfromscratch.org/lfs/view/systemd/chapter10/grub.html
 
-# Mount kernel virtual filesystems before entering chroot
-bash 07.3-mount-kernel-virtual-filesystems.sh
+# Remount kernel virtual filesystems before entering chroot
+bash 07.3-remount-kernel-virtual-filesystems.sh
 
 # Umount and mount the image file
 mkdir -pv $LFS/vagrant
 touch $LFS/vagrant/build_dir.img
-mountpoint -q $LFS/vagrant/build_dir.img && umount -v $LFS/vagrant/build_dir.img
+if mountpoint $LFS/vagrant/build_dir.img; then umount -v $LFS/vagrant/build_dir.img; fi
 mount -v --bind $PWD/build_dir.img $LFS/vagrant/build_dir.img
 
 # Enter chroot

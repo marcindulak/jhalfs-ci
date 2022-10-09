@@ -23,11 +23,11 @@ fi
 
 BACKUP_NAME=$1
 
-mountpoint -q $LFS/dev/shm && umount -v $LFS/dev/shm
-mountpoint -q $LFS/dev/pts && umount -v $LFS/dev/pts
+if mountpoint $LFS/dev/shm; then umount -v $LFS/dev/shm; fi
+if mountpoint $LFS/dev/pts; then umount -v $LFS/dev/pts; fi
 for mp in sys proc run dev;
 do
-    mountpoint -q $LFS/$mp && umount -v $LFS/$mp
+    if mountpoint $LFS/$mp; then umount -v $LFS/$mp; fi
 done
 
 TARNAME=$BACKUP_NAME-$(date +%Y-%m-%d-T-%Hh%M).tar

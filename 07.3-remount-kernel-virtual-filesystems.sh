@@ -10,11 +10,11 @@ fi
 # See https://www.linuxfromscratch.org/lfs/view/systemd/chapter07/kernfs.html
 
 # Umount virtual kernel filesystems
-mountpoint -q $LFS/dev/shm && umount -v $LFS/dev/shm
-mountpoint -q $LFS/dev/pts && umount -v $LFS/dev/pts
+if mountpoint $LFS/dev/shm; then umount -v $LFS/dev/shm; fi
+if mountpoint $LFS/dev/pts; then umount -v $LFS/dev/pts; fi
 for mp in sys proc run dev;
 do
-    mountpoint -q $LFS/$mp && umount -v $LFS/$mp
+    if mountpoint $LFS/$mp; then umount -v $LFS/$mp; fi
 done
 
 # Mount virtual kernel filesystems
@@ -26,5 +26,5 @@ mount -vt tmpfs tmpfs $LFS/run
 if [ -h $LFS/dev/shm ]; then
   mkdir -pv $LFS/$(readlink $LFS/dev/shm)
 else
-  mount -t tmpfs -o nosuid,nodev tmpfs $LFS/dev/shm
+  mount -v -t tmpfs -o nosuid,nodev tmpfs $LFS/dev/shm
 fi

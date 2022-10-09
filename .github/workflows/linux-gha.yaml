@@ -400,11 +400,11 @@ jobs:
           docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
           docker-compose exec jhalfs bash -c "mount -v -a"
 
-      - name: mount kernel virtual filesystems
+      - name: remount kernel virtual filesystems for chroot
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-mount-kernel-virtual-filesystems.sh"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
 
       - name: make BREAKPOINT=824-gcc
         shell: 'script -q -e -c "bash {0}"'
@@ -504,11 +504,11 @@ jobs:
           docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
           docker-compose exec jhalfs bash -c "mount -v -a"
 
-      - name: mount kernel virtual filesystems
+      - name: remount kernel virtual filesystems for chroot
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-mount-kernel-virtual-filesystems.sh"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
 
       - name: make mk_CHROOT
         shell: 'script -q -e -c "bash {0}"'
@@ -608,11 +608,11 @@ jobs:
           docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
           docker-compose exec jhalfs bash -c "mount -v -a"
 
-      - name: mount kernel virtual filesystems
+      - name: remount kernel virtual filesystems for chroot
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-mount-kernel-virtual-filesystems.sh"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
 
       - name: make mk_BOOT
         shell: 'script -q -e -c "bash {0}"'
@@ -660,8 +660,9 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && mountpoint -q \$LFS/vagrant/build_dir.img && umount -v \$LFS/vagrant/build_dir.img"
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && mountpoint -q \$LFS && umount -v \$LFS"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-umount-kernel-virtual-filesystems.sh"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && if mountpoint \$LFS/vagrant/build_dir.img; then umount -v \$LFS/vagrant/build_dir.img; fi"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && if mountpoint \$LFS; then umount -v \$LFS; fi"
           docker-compose exec jhalfs bash -c "mount -v -a"          
 
       - name: print sbu report
