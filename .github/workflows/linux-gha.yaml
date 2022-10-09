@@ -630,6 +630,31 @@ jobs:
         env:
           TARGET: create-sbu_du-report
 
+      - name: make mk_BLFS_TOOL
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+        env:
+          TARGET: mk_BLFS_TOOL
+
+      - name: make mk_CUSTOM_TOOLS
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+        env:
+          TARGET: mk_CUSTOM_TOOLS
+
+      - name: make all
+        # The all target populates /etc/*release
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+        env:
+          TARGET: all
+
       - name: print sbu report
         if: always()
         shell: 'script -q -e -c "bash {0}"'
@@ -710,7 +735,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y qemu-kvm expect
 
-      - name: compress build_dir.img to ~3GB
+      - name: compress build_dir.img
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
@@ -740,7 +765,7 @@ jobs:
         env:
           CHAPTER: chapter10
 
-      - name: compress chapter10 backup to ~1GB
+      - name: compress chapter10 backup
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -783,19 +808,3 @@ jobs:
           path: |
             build_dir.img
           key: ${{ runner.os }}-${{ github.sha }}-build_dir.img.part4
-
-      - name: make mk_BLFS_TOOL
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
-        env:
-          TARGET: mk_BLFS_TOOL
-
-      - name: make mk_CUSTOM_TOOLS
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
-        env:
-          TARGET: mk_CUSTOM_TOOLS
