@@ -15,21 +15,24 @@ The [systemd version of the lfs](https://www.linuxfromscratch.org/lfs/view/syste
 as systemd is the standard nowadays.
 
 **Note**: the setup requires about 16GB of disk space (a bit less than twice the size of the loopback file).
-Both Intel and Apple silicon (untested) processors are supported.
+Intel processor architecture is supported.
+Apple silicon (unsuccessful yet) notes are collected in [1](https://github.com/marcindulak/jhalfs-ci/issues/1).
+To be clear, this project does not boot lfs on a physical drive attached to computer,
+but instead boots an lfs image in an `x86_64/amd64` or `aarch64/arm64` qemu.
 
 # Setup
-
-**Note**: MacOS is untested.
 
 1. Install [docker](https://docs.docker.com/engine/install/ubuntu/) and docker-compose.
    On MacOS install [rancher-desktop](https://rancherdesktop.io/),
    and during the installation select "moby/dockerd" as the engine.
    Docker is used to perform the jhalfs build inside of an Ubuntu container.
 
-2. Install [qemu](https://www.qemu.org/). On MacOS use `brew install qemu`.
+2. Install [qemu](https://www.qemu.org/).
+   On Ubuntu use `sudo apt-get install -y qemu-kvm` and on MacOS use `brew install qemu`.
    Qemu is used as a virtual machine used to boot the created lfs system.
 
-3. Install [expect](https://core.tcl-lang.org/expect). On MacOS use `brew install expect`.
+3. Install [expect](https://core.tcl-lang.org/expect).
+   On Ubuntu use `sudo apt-get install -y expect` and on MacOS use `brew install expect`.
    Expect is used to perform an automated test of lfs booting.
 
 # Usage
@@ -78,7 +81,7 @@ The configuration used by `jhalfs run` is stored in the `configuration` file in 
    docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make ck_UID'"
    ```
 
-   See `jhalfs/targets` for the list of existing makefile targets.
+   See `jhalfs/targets` for the list of existing makefile targets. If you prefer to run all targets use `make all`.
    The result of the build is available under `jhalfs/mnt/build_dir`. If you want to access the contents of this directory
    from the host (laptop), mount it `sudo mount $(cat jhalfs/build_dir.dev) / $PWD/jhalfs/mnt/build_dir`.
 
