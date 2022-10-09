@@ -11,7 +11,7 @@ if { $arch == "x86_64" } {
 } elseif { $arch == "x86_64" } {
     set accel "hvf"
 } else {
-    puts "Unsupported architecture: $arch" ; exit 1 }
+    puts { "Unsupported architecture: $arch" ; exit 1 }
 }
 
 # Start the guest VM
