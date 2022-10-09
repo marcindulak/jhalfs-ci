@@ -655,6 +655,15 @@ jobs:
         env:
           TARGET: all
 
+      - name: umount $LFS to flush the disk cache and mount again
+        # The all target populates /etc/*release
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && mountpoint -q \$LFS/vagrant/build_dir.img && umount -v \$LFS/vagrant/build_dir.img"
+          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && mountpoint -q \$LFS && umount -v \$LFS"
+          docker-compose exec jhalfs bash -c "mount -v -a"          
+
       - name: print sbu report
         if: always()
         shell: 'script -q -e -c "bash {0}"'
