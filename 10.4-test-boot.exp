@@ -20,18 +20,18 @@ if { $arch == "x86_64" } {
 spawn qemu-system-$arch -curses -m 256M -smp 1 -drive file=build_dir.img,format=raw,if=virtio -machine type=pc,accel=$accel
 
 expect {
-    "login: " { send "root\n" }
+    "*login: *" { send "root\n" }
     timeout   { puts "Timeout during boot" ; exit 1 }
 }
 
-expect "Password: "
+expect "*Password: *"
 send "root\n"
 
-expect "bash"
+expect "*bash*"
 send "cat /etc/*release | grep PRETTY\n"
 
-expect "Linux From Scratch"
+expect "*Linux From Scratch*"
 send "python3 -V\n"
 
-expect "Python"
+expect "*Python*"
 send "shutdown -h now\n"
