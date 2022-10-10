@@ -646,6 +646,12 @@ jobs:
         env:
           TARGET: mk_CUSTOM_TOOLS
 
+      - name: configure grub
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker-compose exec jhalfs bash -c 'source /vagrant/jhalfs/jhalfs.sh && cd /vagrant && bash 10.4-configure-grub.sh'
+
       - name: make all
         # The all target populates /etc/*release
         shell: 'script -q -e -c "bash {0}"'
@@ -731,12 +737,6 @@ jobs:
         with:
           name: upload test-logs.tar.xz
           path: ${{ github.workspace }}/test-logs.tar.xz
-
-      - name: configure grub
-        shell: 'script -q -e -c "bash {0}"'
-        run: |
-          set -eo pipefail
-          docker-compose exec jhalfs bash -c 'source /vagrant/jhalfs/jhalfs.sh && cd /vagrant && bash 10.4-configure-grub.sh'
 
       - name: install the lfs boot test dependencies
         shell: 'script -q -e -c "bash {0}"'
