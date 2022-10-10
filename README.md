@@ -107,7 +107,7 @@ They can be used to boot a system. In order to boot the created system, https://
 
    ```sh
    sudo chown $USER build_dir.img
-   JHALFS_ARCH=$(uname -m) expect -f 10.4-test-boot.exp
+   time TERM=linux JHALFS_ARCH=$(uname -m) expect -f 10.4-test-boot.exp
    ```
 
    The expect script will boot the system, login as root using the password configured in step 2. above,

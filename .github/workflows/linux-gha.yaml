@@ -765,7 +765,7 @@ jobs:
         run: |
           set -eo pipefail
           sudo chown $USER build_dir.img
-          JHALFS_ARCH=$(uname -m) expect -f 10.4-test-boot.exp
+          time TERM=linux JHALFS_ARCH=$(uname -m) expect -f 10.4-test-boot.exp
 
       - name: create chapter10 backup
         shell: 'script -q -e -c "bash {0}"'
