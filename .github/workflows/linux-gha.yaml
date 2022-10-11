@@ -15,7 +15,7 @@ on:
       - 'kernel-config'
       - 'Makefile'
   schedule:
-    - cron: '0 3 1 * *'  # First day of the month at 3 a.m.
+    - cron: '0 3 1,15 * *'  # First and 15th day of the month at 3 a.m.
 
 jobs:
   part2:
