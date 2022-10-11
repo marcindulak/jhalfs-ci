@@ -467,7 +467,7 @@ jobs:
           SEGMENT_DOWNLOAD_TIMEOUT_MIN: 10
 
       - name: read cache jhalfs.tar
-        timeout-minutes: 10      
+        timeout-minutes: 10
         uses: actions/cache@v3
         with:
           path: |
@@ -670,7 +670,7 @@ jobs:
           docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-umount-kernel-virtual-filesystems.sh"
           docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && if mountpoint \$LFS/vagrant/build_dir.img; then umount -v \$LFS/vagrant/build_dir.img; fi"
           docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && if mountpoint \$LFS; then umount -v \$LFS; fi"
-          docker-compose exec jhalfs bash -c "mount -v -a"          
+          docker-compose exec jhalfs bash -c "mount -v -a"
 
       - name: print sbu report
         if: always()
@@ -747,14 +747,18 @@ jobs:
           sudo apt-get install -y qemu-kvm expect
 
       - name: compress build_dir.img
-        if: always()
+        #if: always()
+        # The file is too large for gha free plan artifact storage
+        if: ${{ false }}
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
           docker-compose exec jhalfs bash -c "cd /vagrant && time xz --threads=0 --keep build_dir.img && ls -lh build_dir.img.xz"
 
       - name: upload build_dir.img.xz
-        if: always()
+        #if: always()
+        # The file is too large for gha free plan artifact storage
+        if: ${{ false }}
         id: upload_build_dir_img
         uses: actions/upload-artifact@v3
         with:
@@ -769,6 +773,8 @@ jobs:
           time TERM=linux JHALFS_ARCH=$(uname -m) expect -f 10.4-test-boot.exp
 
       - name: create chapter10 backup
+        # The file is too large for gha free plan artifact storage
+        if: ${{ false }}
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -777,19 +783,24 @@ jobs:
           CHAPTER: chapter10
 
       - name: compress chapter10 backup
+        # The file is too large for gha free plan artifact storage
+        if: ${{ false }}
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
           docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && time xz --threads=0 chapter10-*.tar && ls -lh chapter10-*.tar.xz"
 
       - name: move chapter10 backup to /vagrant
+        # The file is too large for gha free plan artifact storage
+        if: ${{ false }}
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
           docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && mv \$LFS/jhalfs/chapter10-*.tar.xz /vagrant"
 
-      # chapter*tar.xz is smaller, but use the build_dir.img image instead to save github action storage
       - name: upload chapter10
+        # The file is too large for gha free plan artifact storage
+        if: ${{ false }}
         id: upload_chapter10
         uses: actions/upload-artifact@v3
         with:
