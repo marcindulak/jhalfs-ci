@@ -132,6 +132,7 @@ They can be used to boot a system. In order to boot the created system, https://
    ```sh
    docker-compose stop jhalfs
    for dev in $(losetup -n -l -O NAME -j /vagrant/build_dir.img); do echo "Detaching $dev" && sudo losetup -d $dev; done
+   for dev in $(losetup -n -l -O NAME -j /build_dir.img); do echo "Detaching $dev" && sudo losetup -d $dev; done
    ```
 
    Do not neglect this step, otherwise you'll keep dangling loopback devices using virtually space on disk.
