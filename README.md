@@ -84,7 +84,7 @@ The configuration used by `jhalfs run` is stored in the `configuration` file in 
 
    See `jhalfs/targets` for the list of existing makefile targets. If you prefer to run all targets use `make all`.
    The result of the build is available under `jhalfs/mnt/build_dir`. If you want to access the contents of this directory
-   from the host (laptop), mount it `sudo mount $(cat jhalfs/build_dir.dev) / $PWD/jhalfs/mnt/build_dir`.
+   from the host (laptop), mount it `sudo mount $(cat jhalfs/build_dir.dev) $PWD/jhalfs/mnt/build_dir`.
 
    At the end of the build, print the [SBUs](https://www.linuxfromscratch.org/~bdubbs/about.html) report:
    ```sh
