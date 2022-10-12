@@ -9,7 +9,7 @@ set arch $::env(JHALFS_ARCH)
 if { $arch == "x86_64" } {
     # kvm requires hardware virtualization
     set accel "tcg"
-} elseif { $arch == "x86_64" } {
+} elseif { $arch == "arm64" } {
     # hvf requires hardware virtualization
     set accel "tcg"
 } else {
