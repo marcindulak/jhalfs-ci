@@ -102,7 +102,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
         env:
           TARGET: mk_SETUP
 
@@ -202,7 +202,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
         env:
           TARGET: mk_LUSER
 
@@ -299,7 +299,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
         env:
           TARGET: mk_SUDO
 
@@ -308,7 +308,7 @@ jobs:
         run: |
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-10/msg00013.html
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-shadow)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-shadow)) as requested\"'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-shadow)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-shadow)) as requested\" || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
 
       - name: save jhalfs:part3shadow image
         run: |
@@ -410,7 +410,7 @@ jobs:
         run: |
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-10/msg00013.html
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-gcc)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-gcc)) as requested\"'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-gcc)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-gcc)) as requested\" || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
 
       - name: save jhalfs:part3gcc image
         run: |
@@ -512,7 +512,7 @@ jobs:
         run: |
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
         env:
           TARGET: mk_CHROOT
 
@@ -615,7 +615,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
         env:
           TARGET: mk_BOOT
 
@@ -623,7 +623,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
         env:
           TARGET: create-sbu_du-report
 
@@ -631,7 +631,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
         env:
           TARGET: mk_BLFS_TOOL
 
@@ -639,7 +639,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
         env:
           TARGET: mk_CUSTOM_TOOLS
 
@@ -654,7 +654,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET || (set -x && cat logs/\$(ls -1tr logs | tail -1) && exit 1)'"
         env:
           TARGET: all
 
