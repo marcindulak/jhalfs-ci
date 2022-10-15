@@ -77,6 +77,7 @@ jobs:
           key: ${{ runner.os }}-${{ github.sha }}-jhalfs
 
       - name: make ck_UID
+        timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -85,6 +86,7 @@ jobs:
           TARGET: ck_UID
 
       - name: make ck_terminal
+        timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -99,6 +101,7 @@ jobs:
           TARGET: ck_terminal
 
       - name: make mk_SETUP
+        timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -199,6 +202,7 @@ jobs:
           docker-compose exec jhalfs bash -c "mount -v -a"
 
       - name: make mk_LUSER
+        timeout-minutes: 120
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -296,6 +300,7 @@ jobs:
           docker-compose exec jhalfs bash -c "mount -v -a"
 
       - name: make mk_SUDO
+        timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -304,6 +309,7 @@ jobs:
           TARGET: mk_SUDO
 
       - name: make BREAKPOINT=*-shadow
+        timeout-minutes: 120
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -406,6 +412,7 @@ jobs:
           docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
 
       - name: make BREAKPOINT=*-gcc
+        timeout-minutes: 120
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -508,6 +515,7 @@ jobs:
           docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
 
       - name: make mk_CHROOT
+        timeout-minutes: 120
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -612,6 +620,7 @@ jobs:
           docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
 
       - name: make mk_BOOT
+        timeout-minutes: 120
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -620,6 +629,7 @@ jobs:
           TARGET: mk_BOOT
 
       - name: make create-sbu_du-report
+        timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -628,6 +638,7 @@ jobs:
           TARGET: create-sbu_du-report
 
       - name: make mk_BLFS_TOOL
+        timeout-minutes: 120
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
@@ -636,6 +647,7 @@ jobs:
           TARGET: mk_BLFS_TOOL
 
       - name: make mk_CUSTOM_TOOLS
+        timeout-minutes: 120
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
