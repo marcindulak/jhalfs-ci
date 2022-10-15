@@ -76,6 +76,13 @@ The configuration used by `jhalfs run` is stored in the `configuration` file in 
    docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 8*-gcc && sed -i \"/test_summary/d\" 8*-gcc'"
    ```
 
+   Since the kernel `.config` is changing rapidly, use [defconfig](https://wiki.gentoo.org/wiki/Kernel/Configuration) instead of a
+   static configuration file. If any of the expected options are not included in the `.config` the kernel's make will hang waiting for
+   user's `y/n` input, and defconfig is a way to prevent this.
+   ```sh
+   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|cp -v ../kernel-config.*|make defconfig|\" 10*-kernel'"
+   ```
+
 3. From this point the individual makefile targets can be executed, for example:
 
    ```sh
