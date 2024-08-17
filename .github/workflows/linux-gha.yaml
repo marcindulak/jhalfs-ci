@@ -34,11 +34,11 @@ jobs:
           sudo rm -rf /usr/share/dotnet
           df -h
 
-      - name: docker-compose up
+      - name: docker compose up
         run: |
           set -eo pipefail
-          docker-compose version
-          docker-compose up -d
+          docker compose version
+          docker compose up -d
           docker ps
 
       - name: container up
@@ -47,32 +47,32 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/02-prepare-for-the-build.sh"
+          docker compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/02-prepare-for-the-build.sh"
 
       - name: fetch jhalfs commit info
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cd /home/vagrant/jhalfs && git show --oneline --no-abbrev --shortstat'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'cd /home/vagrant/jhalfs && git show --oneline --no-abbrev --shortstat'"
 
       - name: fetch lfs commit info
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
 
       - name: disable slow chapter8 tests
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 8*-glibc && sed -i \"/Timed out/d\" 8*-glibc && sed -i \"/test_summary/d\" 8*-glibc'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 8*-gcc && sed -i \"/Timed out/d\" 8*-gcc && sed -i \"/test_summary/d\" 8*-gcc'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 8*-glibc && sed -i \"/Timed out/d\" 8*-glibc && sed -i \"/test_summary/d\" 8*-glibc'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 8*-gcc && sed -i \"/Timed out/d\" 8*-gcc && sed -i \"/test_summary/d\" 8*-gcc'"
 
       - name: use kernel defconfig
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|cp -v ../kernel-config.*|make defconfig|\" 10*-kernel'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|cp -v ../kernel-config.*|make defconfig|\" 10*-kernel'"
 
       # The jhalfs directory is assumed to be unchaged from this point, hence caching it once
       # In other words, the $LFS mounted in the guest (container) is assumed invisible (empty dir) to the host
@@ -88,7 +88,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: ck_UID
 
@@ -97,7 +97,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make ck_terminal
         timeout-minutes: 10
@@ -108,9 +108,9 @@ jobs:
           # stty: 'standard input': Inappropriate ioctl for device
           # Terminal too small:  columns x  lines
           # Minimum: 80 columns x 24 lines
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && sed -i \"/^all:/s/$TARGET//\" Makefile'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && sed -i \"/^all:/s/$TARGET//\" Makefile'"
           exit
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: ck_terminal
 
@@ -119,14 +119,14 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make mk_SETUP
         timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_SETUP
 
@@ -135,14 +135,14 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: save jhalfs:part2 image
         run: |
@@ -221,7 +221,7 @@ jobs:
         run: |
           set -eo pipefail
           docker load < jhalfs.tar
-          JHALFS_IMAGE=jhalfs:part2 docker-compose up -d
+          JHALFS_IMAGE=jhalfs:part2 docker compose up -d
           docker images
           docker ps
 
@@ -229,19 +229,19 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "cat /etc/fstab"
-          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
-          docker-compose exec jhalfs bash -c "mount -v -a"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "cat /etc/fstab"
+          docker compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker compose exec jhalfs bash -c "mount -v -a"
 
       - name: make mk_LUSER
         timeout-minutes: 90
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_LUSER
 
@@ -250,15 +250,15 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: save jhalfs:part3luser image
         run: |
@@ -334,7 +334,7 @@ jobs:
         run: |
           set -eo pipefail
           docker load < jhalfs.tar
-          JHALFS_IMAGE=jhalfs:part3luser docker-compose up -d
+          JHALFS_IMAGE=jhalfs:part3luser docker compose up -d
           docker images
           docker ps
 
@@ -342,19 +342,19 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "cat /etc/fstab"
-          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
-          docker-compose exec jhalfs bash -c "mount -v -a"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "cat /etc/fstab"
+          docker compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker compose exec jhalfs bash -c "mount -v -a"
 
       - name: cat /etc/{group,passwd}
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
 
       - name: addinguser on a fresh host
         # This is needed as new gha job starts on a host which does not have lfs user
@@ -362,37 +362,37 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent group lfs || sudo groupadd lfs'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent passwd lfs || sudo useradd -s /bin/bash -g lfs -m -k /dev/null lfs'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent group lfs || sudo groupadd lfs'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent passwd lfs || sudo useradd -s /bin/bash -g lfs -m -k /dev/null lfs'"
 
       - name: cat /etc/{group,passwd}
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
 
       - name: tail last log
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make mk_SUDO
         timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_SUDO
 
@@ -401,15 +401,15 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make BREAKPOINT=*-shadow
         timeout-minutes: 90
@@ -417,22 +417,22 @@ jobs:
         run: |
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-10/msg00013.html
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-shadow)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-shadow)) as requested\"'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-shadow)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-shadow)) as requested\"'"
 
       - name: tail last log
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: save jhalfs:part3shadow image
         run: |
@@ -508,7 +508,7 @@ jobs:
         run: |
           set -eo pipefail
           docker load < jhalfs.tar
-          JHALFS_IMAGE=jhalfs:part3shadow docker-compose up -d
+          JHALFS_IMAGE=jhalfs:part3shadow docker compose up -d
           docker images
           docker ps
 
@@ -516,25 +516,25 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "cat /etc/fstab"
-          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
-          docker-compose exec jhalfs bash -c "mount -v -a"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "cat /etc/fstab"
+          docker compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker compose exec jhalfs bash -c "mount -v -a"
 
       - name: remount kernel virtual filesystems for chroot
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
 
       - name: cat /etc/{group,passwd}
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
 
       - name: addinguser on a fresh host
         # This is needed as new gha job starts on a host which does not have lfs user
@@ -542,30 +542,30 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent group lfs || sudo groupadd lfs'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent passwd lfs || sudo useradd -s /bin/bash -g lfs -m -k /dev/null lfs'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent group lfs || sudo groupadd lfs'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent passwd lfs || sudo useradd -s /bin/bash -g lfs -m -k /dev/null lfs'"
 
       - name: cat /etc/{group,passwd}
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
 
       - name: tail last log
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make BREAKPOINT=*-gcc
         timeout-minutes: 90
@@ -573,22 +573,22 @@ jobs:
         run: |
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-10/msg00013.html
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-gcc)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-gcc)) as requested\"'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-gcc)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-gcc)) as requested\"'"
 
       - name: tail last log
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: save jhalfs:part3gcc image
         run: |
@@ -664,7 +664,7 @@ jobs:
         run: |
           set -eo pipefail
           docker load < jhalfs.tar
-          JHALFS_IMAGE=jhalfs:part3gcc docker-compose up -d
+          JHALFS_IMAGE=jhalfs:part3gcc docker compose up -d
           docker images
           docker ps
 
@@ -672,25 +672,25 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "cat /etc/fstab"
-          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
-          docker-compose exec jhalfs bash -c "mount -v -a"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "cat /etc/fstab"
+          docker compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker compose exec jhalfs bash -c "mount -v -a"
 
       - name: remount kernel virtual filesystems for chroot
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
 
       - name: cat /etc/{group,passwd}
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
 
       - name: addinguser on a fresh host
         # This is needed as new gha job starts on a host which does not have lfs user
@@ -698,30 +698,30 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent group lfs || sudo groupadd lfs'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent passwd lfs || sudo useradd -s /bin/bash -g lfs -m -k /dev/null lfs'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent group lfs || sudo groupadd lfs'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent passwd lfs || sudo useradd -s /bin/bash -g lfs -m -k /dev/null lfs'"
 
       - name: cat /etc/{group,passwd}
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
 
       - name: tail last log
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make mk_CHROOT
         timeout-minutes: 90
@@ -729,7 +729,7 @@ jobs:
         run: |
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-09/msg00015.html
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_CHROOT
 
@@ -738,15 +738,15 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: save jhalfs:part3remaining image
         run: |
@@ -822,7 +822,7 @@ jobs:
         run: |
           set -eo pipefail
           docker load < jhalfs.tar
-          JHALFS_IMAGE=jhalfs:part3remaining docker-compose up -d
+          JHALFS_IMAGE=jhalfs:part3remaining docker compose up -d
           docker images
           docker ps
 
@@ -830,25 +830,25 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
-          docker-compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
-          docker-compose exec jhalfs bash -c "cat /etc/fstab"
-          docker-compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
-          docker-compose exec jhalfs bash -c "mount -v -a"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "losetup -P \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img"
+          docker compose exec jhalfs bash -c "losetup -a | grep \$(cat /vagrant/jhalfs/build_dir.dev) || true"
+          docker compose exec jhalfs bash -c "cat /etc/fstab"
+          docker compose exec jhalfs bash -c "cd /vagrant/jhalfs && bash /vagrant/02.7-mknod-loopback-partition.sh"
+          docker compose exec jhalfs bash -c "mount -v -a"
 
       - name: remount kernel virtual filesystems for chroot
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-remount-kernel-virtual-filesystems.sh"
 
       - name: cat /etc/{group,passwd}
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
 
       - name: addinguser on a fresh host
         # This is needed as new gha job starts on a host which does not have lfs user
@@ -856,37 +856,37 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent group lfs || sudo groupadd lfs'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent passwd lfs || sudo useradd -s /bin/bash -g lfs -m -k /dev/null lfs'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent group lfs || sudo groupadd lfs'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && getent passwd lfs || sudo useradd -s /bin/bash -g lfs -m -k /dev/null lfs'"
 
       - name: cat /etc/{group,passwd}
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'cat /etc/{group,passwd}'"
 
       - name: tail last log
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make mk_BOOT
         timeout-minutes: 90
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_BOOT
 
@@ -895,22 +895,22 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make create-sbu_du-report
         timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: create-sbu_du-report
 
@@ -919,22 +919,22 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make mk_BLFS_TOOL
         timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_BLFS_TOOL
 
@@ -943,22 +943,22 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: make mk_CUSTOM_TOOLS
         timeout-minutes: 10
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: mk_CUSTOM_TOOLS
 
@@ -967,28 +967,28 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: configure grub
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c 'source /vagrant/jhalfs/jhalfs.sh && cd /vagrant && bash 10.4-configure-grub.sh'
+          docker compose exec jhalfs bash -c 'source /vagrant/jhalfs/jhalfs.sh && cd /vagrant && bash 10.4-configure-grub.sh'
 
       - name: make all
         # The all target populates /etc/*release
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make $TARGET'"
         env:
           TARGET: all
 
@@ -997,39 +997,39 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
       - name: umount $LFS to flush the disk cache and mount again
         # The all target populates /etc/*release
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-umount-kernel-virtual-filesystems.sh"
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && if mountpoint \$LFS/vagrant/build_dir.img; then umount -v \$LFS/vagrant/build_dir.img; fi"
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && if mountpoint \$LFS; then umount -v \$LFS; fi"
-          docker-compose exec jhalfs bash -c "mount -v -a"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && bash /vagrant/07.3-umount-kernel-virtual-filesystems.sh"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && if mountpoint \$LFS/vagrant/build_dir.img; then umount -v \$LFS/vagrant/build_dir.img; fi"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && if mountpoint \$LFS; then umount -v \$LFS; fi"
+          docker compose exec jhalfs bash -c "mount -v -a"
 
       - name: print sbu report
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
 
       - name: copy sbu report to /vagrant
         if: always()
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -pv \$LFS/jhalfs/*SBU_DU*.report /vagrant"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -pv \$LFS/jhalfs/*SBU_DU*.report /vagrant"
 
       - name: upload sbu report
         if: always()
@@ -1044,7 +1044,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -rpv \$LFS/jhalfs/installed-files /vagrant && cd /vagrant && tar Jcf installed-files.tar.xz installed-files"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -rpv \$LFS/jhalfs/installed-files /vagrant && cd /vagrant && tar Jcf installed-files.tar.xz installed-files"
 
       - name: upload installed-files.tar.xz
         if: always()
@@ -1059,7 +1059,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -rpv \$LFS/jhalfs/logs /vagrant && cd /vagrant && tar Jcf logs.tar.xz logs"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -rpv \$LFS/jhalfs/logs /vagrant && cd /vagrant && tar Jcf logs.tar.xz logs"
 
       - name: upload logs.tar.xz
         if: always()
@@ -1074,7 +1074,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -rpv \$LFS/jhalfs/test-logs /vagrant && cd /vagrant && tar Jcf test-logs.tar.xz test-logs"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cp -rpv \$LFS/jhalfs/test-logs /vagrant && cd /vagrant && tar Jcf test-logs.tar.xz test-logs"
 
       - name: upload test-logs.tar.xz
         if: always()
@@ -1098,7 +1098,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "cd /vagrant && time xz --threads=0 --keep build_dir.img && ls -lh build_dir.img.xz"
+          docker compose exec jhalfs bash -c "cd /vagrant && time xz --threads=0 --keep build_dir.img && ls -lh build_dir.img.xz"
 
       - name: upload build_dir.img.xz
         #if: always()
@@ -1123,7 +1123,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && bash /vagrant/10.4-save-backup.sh $CHAPTER"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && bash /vagrant/10.4-save-backup.sh $CHAPTER"
         env:
           CHAPTER: chapter10
 
@@ -1133,7 +1133,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && time xz --threads=0 chapter10-*.tar && ls -lh chapter10-*.tar.xz"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && time xz --threads=0 chapter10-*.tar && ls -lh chapter10-*.tar.xz"
 
       - name: move chapter10 backup to /vagrant
         # The file is too large for gha free plan artifact storage
@@ -1141,7 +1141,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && mv -v \$LFS/jhalfs/chapter10-*.tar.xz /vagrant"
+          docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && mv -v \$LFS/jhalfs/chapter10-*.tar.xz /vagrant"
 
       - name: upload chapter10
         # The file is too large for gha free plan artifact storage

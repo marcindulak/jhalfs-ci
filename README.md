@@ -22,7 +22,7 @@ but instead boots an lfs image in an `x86_64/amd64` or `aarch64/arm64` qemu.
 
 # Setup
 
-1. Install [docker](https://docs.docker.com/engine/install/ubuntu/) and docker-compose.
+1. Install [docker](https://docs.docker.com/engine/install/ubuntu/) and [docker-compose](https://docs.docker.com/compose/install/).
    On MacOS install [rancher-desktop](https://rancherdesktop.io/),
    and during the installation select "moby/dockerd" as the engine.
    Docker is used to perform the jhalfs build inside of an Ubuntu container.
@@ -43,7 +43,7 @@ but instead boots an lfs image in an `x86_64/amd64` or `aarch64/arm64` qemu.
 inside of which lfs is built.
 
    ```sh
-   docker-compose up -d
+   docker compose up -d
    ```
 
    In preliminary steps a loopback device is created, formatted and mounted as the destination for
@@ -56,15 +56,15 @@ After the preliminary steps are done, `jhalfs run` is invoked to generate the sc
 The configuration used by `jhalfs run` is stored in the `configuration` file in the root folder of this repository.
 
    ```sh
-   docker-compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/02-prepare-for-the-build.sh"
+   docker compose exec jhalfs bash -c "cd /vagrant && bash /vagrant/02-prepare-for-the-build.sh"
    ```
 
    Fetch the commits of the jhalfs and lfs books with:
    ```sh
-   docker-compose exec jhalfs bash -c "su - vagrant -c 'cd /home/vagrant/jhalfs && git show --oneline --no-abbrev --shortstat'"
+   docker compose exec jhalfs bash -c "su - vagrant -c 'cd /home/vagrant/jhalfs && git show --oneline --no-abbrev --shortstat'"
    ```
    ```sh
-   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
+   docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && git show --oneline --no-abbrev --shortstat'"
    ```
 
    The references to `/vagrant` in this repository are leftovers from a [vagrant](https://www.vagrantup.com/) based setup.
@@ -72,21 +72,21 @@ The configuration used by `jhalfs run` is stored in the `configuration` file in 
    Due to the [6h limit](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits)
    on a github action runner, disable slow chapter8 tests.
    ```sh
-   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 8*-glibc && sed -i \"/Timed out/d\" 8*-glibc && sed -i \"/test_summary/d\" 8*-glibc'"
-   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 8*-gcc && sed -i \"/Timed out/d\" 8*-gcc && sed -i \"/test_summary/d\" 8*-gcc'"
+   docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 8*-glibc && sed -i \"/Timed out/d\" 8*-glibc && sed -i \"/test_summary/d\" 8*-glibc'"
+   docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter08 && sed -i \"/make -k check/d\" 8*-gcc && sed -i \"/Timed out/d\" 8*-gcc && sed -i \"/test_summary/d\" 8*-gcc'"
    ```
 
    Since the kernel `.config` is changing rapidly, use [defconfig](https://wiki.gentoo.org/wiki/Kernel/Configuration) instead of a
    static configuration file. If any of the expected options are not included in the `.config` the kernel's make will hang waiting for
    user's `y/n` input, and defconfig is a way to prevent this.
    ```sh
-   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|cp -v ../kernel-config.*|make defconfig|\" 10*-kernel'"
+   docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/lfs-commands/chapter10 && sed -i \"s|cp -v ../kernel-config.*|make defconfig|\" 10*-kernel'"
    ```
 
 3. From this point the individual makefile targets can be executed, for example:
 
    ```sh
-   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make ck_UID'"
+   docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make ck_UID'"
    ```
 
    See `jhalfs/targets` for the list of existing makefile targets. If you prefer to run all targets use `make all`.
@@ -95,7 +95,7 @@ The configuration used by `jhalfs run` is stored in the `configuration` file in 
 
    At the end of the build, print the [SBUs](https://www.linuxfromscratch.org/~bdubbs/about.html) report:
    ```sh
-   docker-compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
+   docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cat \$LFS/jhalfs/*SBU_DU*.report'"
    ```
 
 ## Booting the system
@@ -106,7 +106,7 @@ They can be used to boot a system. In order to boot the created system, https://
 1. Configure grub, see [chapter10](https://www.linuxfromscratch.org/lfs/view/systemd/chapter10/grub.html):
 
    ```sh
-   docker-compose exec jhalfs bash -c 'source /vagrant/jhalfs/jhalfs.sh && cd /vagrant && bash 10.4-configure-grub.sh'
+   docker compose exec jhalfs bash -c 'source /vagrant/jhalfs/jhalfs.sh && cd /vagrant && bash 10.4-configure-grub.sh'
    ```
 
    Note that when qemu is used the `root` device is `/dev/vda1`.
@@ -125,19 +125,19 @@ They can be used to boot a system. In order to boot the created system, https://
 3. If desired, backup the system, see [chapter7](https://www.linuxfromscratch.org/lfs/view/systemd/chapter07/cleanup.html):
 
    ```sh
-   docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && bash /vagrant/10.4-save-backup.sh chapter10"
+   docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && bash /vagrant/10.4-save-backup.sh chapter10"
    ```
 
    Copy the backup to the host (laptop):
 
    ```sh
-   docker-compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && cp -p jhalfs/chapter10*.tar* /vagrant"
+   docker compose exec jhalfs bash -c "source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && cp -p jhalfs/chapter10*.tar* /vagrant"
    ```
 
 4. **Only** after finishing the project exploration, stop the container, and cleanup the loopback device from the host (laptop):
 
    ```sh
-   docker-compose stop jhalfs
+   docker compose stop jhalfs
    for dev in $(losetup -n -l -O NAME -j /vagrant/build_dir.img); do echo "Detaching $dev" && sudo losetup -d $dev; done
    for dev in $(losetup -n -l -O NAME -j /build_dir.img); do echo "Detaching $dev" && sudo losetup -d $dev; done
    ```
@@ -158,9 +158,9 @@ docker rm jhalfs
 If the image was saved, and transfered to another host (laptop), it needs to be loaded, and used to start a container:
 ```sh
 docker load < "jhalfs:part2.tar"
-JHALFS_IMAGE=jhalfs:part2 docker-compose up -d
+JHALFS_IMAGE=jhalfs:part2 docker compose up -d
 # Attach and mount the loopback device, it is assumed to be free
-docker-compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
+docker compose exec jhalfs bash -c "losetup \$(cat /vagrant/jhalfs/build_dir.dev) /vagrant/build_dir.img && mount -a"
 ```
 
 Other parts, after the `make mk_CHROOT` target in
