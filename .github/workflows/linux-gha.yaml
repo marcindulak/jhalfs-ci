@@ -725,6 +725,13 @@ jobs:
           set -eo pipefail
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
 
+      - name: tree /usr/share/terminfo
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && tree -ugsD usr/share/terminfo || true'"
+
       - name: make mk_CHROOT
         timeout-minutes: 90
         shell: 'script -q -e -c "bash {0}"'
@@ -749,6 +756,20 @@ jobs:
         run: |
           set -eo pipefail
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && tree -ugsD'"
+
+      - name: tree /sources/ncurses-*/dest/usr/share/terminfo
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && tree -ugsD sources/ncurses-*/dest/usr/share/terminfo || true'"
+
+      - name: tree /usr/share/terminfo
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS && tree -ugsD usr/share/terminfo || true'"
 
       - name: save jhalfs:part3remaining image
         run: |
