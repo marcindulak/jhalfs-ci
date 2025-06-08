@@ -15,7 +15,9 @@ on:
       - 'kernel-config'
       - 'Makefile'
   schedule:
-    - cron: '0 3 1,15 * *'  # First and 15th day of the month at 3 a.m.
+    # lfs patches are copied at 7 a.m. UTC
+    # See https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2025-06/msg00005.html
+    - cron: '0 9 1,15 * *'  # First and 15th day of the month at 9 a.m. UTC
   workflow_dispatch:
 
 jobs:
@@ -135,7 +137,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
         if: always()
@@ -250,7 +252,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -377,7 +379,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -401,7 +403,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -424,7 +426,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -557,7 +559,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -580,7 +582,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -713,7 +715,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -738,7 +740,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -871,7 +873,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -895,7 +897,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -919,7 +921,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -943,7 +945,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -967,7 +969,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
@@ -997,7 +999,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && tail -100 \$LAST_LOG'"
+          docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=logs/\$(ls -1tr logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && set -x && LAST_LOG=test-logs/\$(ls -1tr test-logs | tail -1) && ls -al \$LAST_LOG && cat \$LAST_LOG'"
 
       - name: tree
