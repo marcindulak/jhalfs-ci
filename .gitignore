@@ -1,0 +1,17 @@
+# Teporary files
+old
+*~
+
+# Vagrant
+.vagrant
+
+# jhalfs
+build_dir.*
+installed-files*
+jhalfs
+jhalfs*.tar
+logs*
+sources
+test-logs*
+/*SBU_DU*.report
+chapter*.tar*
