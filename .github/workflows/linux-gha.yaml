@@ -1047,6 +1047,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y qemu-kvm expect
 
+      - name: ls -ahl build_dir.img
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker compose exec jhalfs bash -c "cd /vagrant && ls -ahl build_dir.img"
+
       - name: compress build_dir.img
         #if: always()
         # The file is too large for gha free plan artifact storage
@@ -1054,7 +1061,7 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          docker compose exec jhalfs bash -c "cd /vagrant && time xz --threads=0 --keep build_dir.img && ls -lh build_dir.img.xz"
+          docker compose exec jhalfs bash -c "cd /vagrant && time xz --threads=0 --keep build_dir.img && ls -ahl build_dir.img.xz"
 
       - name: upload build_dir.img.xz
         #if: always()

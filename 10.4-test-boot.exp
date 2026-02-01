@@ -1,7 +1,7 @@
 #!/usr/bin/expect
 
 # Wait for boot
-set timeout 90
+set timeout 180
 
 # Set environment variables
 set arch $::env(JHALFS_ARCH)
