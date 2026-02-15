@@ -1,0 +1,1447 @@
+
+Tue Oct  1 19:30:44 UTC 2024
+
+Book version is:	r12.2-11-systemd-wip
+
+
+	jhalfs configuration settings:
+
+COMMIT 	<trunk>
+BOOK 	</vagrant/jhalfs/mnt/build_dir/jhalfs/book-source>
+CUSTOM_TOOLS 	<n>
+INITSYS 	<systemd>
+BLFS_TOOL 	<n>
+LUSER 	<lfs>
+LGROUP 	<lfs>
+LHOME 	</home>
+BUILDDIR 	</vagrant/jhalfs/mnt/build_dir>
+CLEAN 	<n>
+GETPKG 	<y>
+SRC_ARCHIVE 	</vagrant/sources>
+==============================================================================
+	WARNING-- You do not have 	<write> access to the directory
+	       -- /vagrant/sources
+==============================================================================
+
+RETRYSRCDOWNLOAD 	<y>
+RETRYDOWNLOADCNT 	<5>
+DOWNLOADTIMEOUT 	<30>
+RUNMAKE 	<n>
+TEST 	<1>
+STRIP 	<n>
+NCURSES5 	<n>
+FSTAB 	</vagrant/jhalfs/mnt/build_dir/sources/fstab>
+CONFIG 	</vagrant/jhalfs/mnt/build_dir/sources/kernel-config>
+TIMEZONE 	<GMT>
+PAGE 	<letter>
+LANG 	<POSIX>
+INSTALL_LOG 	<y>
+PKGMNGT 	<n>
+FULL_LOCALE 	<n>
+WRAP_INSTALL 	<n>
+HOSTNAME 	<jhalfs>
+INTERFACE 	<eth0>
+IP_ADDR 	<10.0.2.9>
+GATEWAY 	<10.0.2.2>
+PREFIX 	<24>
+BROADCAST 	<10.0.2.255>
+DOMAIN 	<local>
+DNS1 	<10.0.2.3>
+DNS2 	<8.8.8.8>
+FONT 	<lat0-16>
+KEYMAP 	<us>
+LOCAL 	<n>
+LOG_LEVEL 	<>
+COMPARE 	<n>
+OPTIMIZE 	<2>
+ALL_CORES 	<n>
+N_PARALLEL 	<3>
+REALSBU 	<n>
+SAVE_CH5 	<n>
+REPORT 	<y>
+REBUILD_MAKEFILE 	<n>
+
+
+
+
+		CPU type:
+
+Architecture:                         x86_64
+CPU op-mode(s):                       32-bit, 64-bit
+Address sizes:                        48 bits physical, 48 bits virtual
+Byte Order:                           Little Endian
+CPU(s):                               4
+On-line CPU(s) list:                  0-3
+Vendor ID:                            AuthenticAMD
+BIOS Vendor ID:                       None
+Model name:                           AMD EPYC 7763 64-Core Processor
+BIOS Model name:                      AMD EPYC 7763 64-Core Processor                 None CPU @ 2.4GHz
+BIOS CPU family:                      107
+CPU family:                           25
+Model:                                1
+Thread(s) per core:                   2
+Core(s) per socket:                   2
+Socket(s):                            1
+Stepping:                             1
+BogoMIPS:                             4890.85
+Flags:                                fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves user_shstk clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm
+Virtualization:                       AMD-V
+Hypervisor vendor:                    Microsoft
+Virtualization type:                  full
+L1d cache:                            64 KiB (2 instances)
+L1i cache:                            64 KiB (2 instances)
+L2 cache:                             1 MiB (2 instances)
+L3 cache:                             32 MiB (1 instance)
+NUMA node(s):                         1
+NUMA node0 CPU(s):                    0-3
+Vulnerability Gather data sampling:   Not affected
+Vulnerability Itlb multihit:          Not affected
+Vulnerability L1tf:                   Not affected
+Vulnerability Mds:                    Not affected
+Vulnerability Meltdown:               Not affected
+Vulnerability Mmio stale data:        Not affected
+Vulnerability Reg file data sampling: Not affected
+Vulnerability Retbleed:               Not affected
+Vulnerability Spec rstack overflow:   Vulnerable: Safe RET, no microcode
+Vulnerability Spec store bypass:      Vulnerable
+Vulnerability Spectre v1:             Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:             Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                  Not affected
+Vulnerability Tsx async abort:        Not affected
+
+		Memory info:
+
+               total        used        free      shared  buff/cache   available
+Mem:        16373800     1182144     2900512       24724    12670844    15191656
+Swap:        4194300         524     4193776
+
+
+================================================================================
+
+The SBU unit value is equal to 77 seconds at -j3.
+
+================================================================================
+				[binutils-pass1-2.43.1]
+
+Build time is:						1 minutes and 17 seconds
+Build time in seconds is:				77
+Approximate SBU time is:				1.0
+Disk usage before unpacking the package:		531100 KB or 518.652 MB
+Disk usage before deleting the source and build dirs:	1262044 KB or 1232.465 MB
+Required space to build the package:			730944 KB or 713.813 MB
+Installed files disk usage:				108696 KB or 106.149 MB
+
+================================================================================
+				[gcc-pass1-14.2.0]
+
+Build time is:						15 minutes and 8 seconds
+Build time in seconds is:				908
+Approximate SBU time is:				11.8
+Disk usage before unpacking the package:		639796 KB or 624.801 MB
+Disk usage before deleting the source and build dirs:	5898928 KB or 5760.672 MB
+Required space to build the package:			5259132 KB or 5135.871 MB
+Installed files disk usage:				1380448 KB or 1348.094 MB
+
+================================================================================
+				[linux-headers-6.10.8]
+
+Build time is:						0 minutes and 7 seconds
+Build time in seconds is:				7
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2020244 KB or 1972.895 MB
+Disk usage before deleting the source and build dirs:	3654184 KB or 3568.539 MB
+Required space to build the package:			1633940 KB or 1595.644 MB
+Installed files disk usage:				9120 KB or 8.906 MB
+
+================================================================================
+				[glibc-2.40]
+
+Build time is:						5 minutes and 31 seconds
+Build time in seconds is:				331
+Approximate SBU time is:				4.3
+Disk usage before unpacking the package:		2029364 KB or 1981.801 MB
+Disk usage before deleting the source and build dirs:	2876032 KB or 2808.625 MB
+Required space to build the package:			846668 KB or 826.824 MB
+Installed files disk usage:				103120 KB or 100.703 MB
+
+================================================================================
+				[gcc-libstdc++-14.2.0]
+
+Build time is:						0 minutes and 54 seconds
+Build time in seconds is:				54
+Approximate SBU time is:				0.7
+Disk usage before unpacking the package:		2132484 KB or 2082.504 MB
+Disk usage before deleting the source and build dirs:	3390168 KB or 3310.711 MB
+Required space to build the package:			1257684 KB or 1228.207 MB
+Installed files disk usage:				36548 KB or 35.691 MB
+
+================================================================================
+				[m4-1.4.19]
+
+Build time is:						0 minutes and 25 seconds
+Build time in seconds is:				25
+Approximate SBU time is:				0.3
+Disk usage before unpacking the package:		2169032 KB or 2118.195 MB
+Disk usage before deleting the source and build dirs:	2201712 KB or 2150.109 MB
+Required space to build the package:			32680 KB or 31.914 MB
+Installed files disk usage:				1876 KB or 1.832 MB
+
+================================================================================
+				[ncurses-6.5]
+
+Build time is:						1 minutes and 16 seconds
+Build time in seconds is:				76
+Approximate SBU time is:				1.0
+Disk usage before unpacking the package:		2170908 KB or 2120.027 MB
+Disk usage before deleting the source and build dirs:	2229076 KB or 2176.832 MB
+Required space to build the package:			58168 KB or 56.805 MB
+Installed files disk usage:				10704 KB or 10.453 MB
+
+================================================================================
+				[bash-5.2.32]
+
+Build time is:						0 minutes and 37 seconds
+Build time in seconds is:				37
+Approximate SBU time is:				0.5
+Disk usage before unpacking the package:		2181612 KB or 2130.480 MB
+Disk usage before deleting the source and build dirs:	2250744 KB or 2197.992 MB
+Required space to build the package:			69132 KB or 67.512 MB
+Installed files disk usage:				13908 KB or 13.582 MB
+
+================================================================================
+				[coreutils-9.5]
+
+Build time is:						1 minutes and 7 seconds
+Build time in seconds is:				67
+Approximate SBU time is:				0.9
+Disk usage before unpacking the package:		2195520 KB or 2144.062 MB
+Disk usage before deleting the source and build dirs:	2376204 KB or 2320.512 MB
+Required space to build the package:			180684 KB or 176.450 MB
+Installed files disk usage:				45992 KB or 44.915 MB
+
+================================================================================
+				[diffutils-3.10]
+
+Build time is:						0 minutes and 21 seconds
+Build time in seconds is:				21
+Approximate SBU time is:				0.3
+Disk usage before unpacking the package:		2241512 KB or 2188.977 MB
+Disk usage before deleting the source and build dirs:	2271428 KB or 2218.191 MB
+Required space to build the package:			29916 KB or 29.214 MB
+Installed files disk usage:				3360 KB or 3.281 MB
+
+================================================================================
+				[file-5.45]
+
+Build time is:						0 minutes and 18 seconds
+Build time in seconds is:				18
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		2244872 KB or 2192.258 MB
+Disk usage before deleting the source and build dirs:	2283112 KB or 2229.602 MB
+Required space to build the package:			38240 KB or 37.344 MB
+Installed files disk usage:				9104 KB or 8.890 MB
+
+================================================================================
+				[findutils-4.10.0]
+
+Build time is:						0 minutes and 33 seconds
+Build time in seconds is:				33
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		2253976 KB or 2201.148 MB
+Disk usage before deleting the source and build dirs:	2303956 KB or 2249.957 MB
+Required space to build the package:			49980 KB or 48.809 MB
+Installed files disk usage:				4556 KB or 4.450 MB
+
+================================================================================
+				[gawk-5.3.1]
+
+Build time is:						0 minutes and 24 seconds
+Build time in seconds is:				24
+Approximate SBU time is:				0.3
+Disk usage before unpacking the package:		2258532 KB or 2205.598 MB
+Disk usage before deleting the source and build dirs:	2306988 KB or 2252.918 MB
+Required space to build the package:			48456 KB or 47.320 MB
+Installed files disk usage:				7464 KB or 7.289 MB
+
+================================================================================
+				[grep-3.11]
+
+Build time is:						0 minutes and 23 seconds
+Build time in seconds is:				23
+Approximate SBU time is:				0.3
+Disk usage before unpacking the package:		2265996 KB or 2212.887 MB
+Disk usage before deleting the source and build dirs:	2294236 KB or 2240.465 MB
+Required space to build the package:			28240 KB or 27.578 MB
+Installed files disk usage:				2096 KB or 2.047 MB
+
+================================================================================
+				[gzip-1.13]
+
+Build time is:						0 minutes and 17 seconds
+Build time in seconds is:				17
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		2268092 KB or 2214.934 MB
+Disk usage before deleting the source and build dirs:	2279852 KB or 2226.418 MB
+Required space to build the package:			11760 KB or 11.484 MB
+Installed files disk usage:				528 KB or 0.515 MB
+
+================================================================================
+				[make-4.4.1]
+
+Build time is:						0 minutes and 10 seconds
+Build time in seconds is:				10
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2268620 KB or 2215.449 MB
+Disk usage before deleting the source and build dirs:	2284364 KB or 2230.824 MB
+Required space to build the package:			15744 KB or 15.375 MB
+Installed files disk usage:				2832 KB or 2.766 MB
+
+================================================================================
+				[patch-2.7.6]
+
+Build time is:						0 minutes and 20 seconds
+Build time in seconds is:				20
+Approximate SBU time is:				0.3
+Disk usage before unpacking the package:		2271452 KB or 2218.215 MB
+Disk usage before deleting the source and build dirs:	2284324 KB or 2230.785 MB
+Required space to build the package:			12872 KB or 12.570 MB
+Installed files disk usage:				800 KB or 0.781 MB
+
+================================================================================
+				[sed-4.9]
+
+Build time is:						0 minutes and 18 seconds
+Build time in seconds is:				18
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		2272252 KB or 2218.996 MB
+Disk usage before deleting the source and build dirs:	2293984 KB or 2240.219 MB
+Required space to build the package:			21732 KB or 21.223 MB
+Installed files disk usage:				1652 KB or 1.613 MB
+
+================================================================================
+				[tar-1.35]
+
+Build time is:						0 minutes and 31 seconds
+Build time in seconds is:				31
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		2273904 KB or 2220.609 MB
+Disk usage before deleting the source and build dirs:	2317896 KB or 2263.570 MB
+Required space to build the package:			43992 KB or 42.961 MB
+Installed files disk usage:				5432 KB or 5.305 MB
+
+================================================================================
+				[xz-5.6.2]
+
+Build time is:						0 minutes and 17 seconds
+Build time in seconds is:				17
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		2279336 KB or 2225.914 MB
+Disk usage before deleting the source and build dirs:	2300728 KB or 2246.805 MB
+Required space to build the package:			21392 KB or 20.891 MB
+Installed files disk usage:				3368 KB or 3.289 MB
+
+================================================================================
+				[binutils-pass2-2.43.1]
+
+Build time is:						1 minutes and 47 seconds
+Build time in seconds is:				107
+Approximate SBU time is:				1.4
+Disk usage before unpacking the package:		2282704 KB or 2229.203 MB
+Disk usage before deleting the source and build dirs:	2845496 KB or 2778.805 MB
+Required space to build the package:			562792 KB or 549.602 MB
+Installed files disk usage:				31464 KB or 30.727 MB
+
+================================================================================
+				[gcc-pass2-14.2.0]
+
+Build time is:						19 minutes and 30 seconds
+Build time in seconds is:				1170
+Approximate SBU time is:				15.2
+Disk usage before unpacking the package:		2314168 KB or 2259.930 MB
+Disk usage before deleting the source and build dirs:	7923912 KB or 7738.195 MB
+Required space to build the package:			5609744 KB or 5478.265 MB
+Installed files disk usage:				1445280 KB or 1411.406 MB
+
+================================================================================
+				[changingowner]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3759448 KB or 3671.336 MB
+Disk usage before deleting the source and build dirs:	3759448 KB or 3671.336 MB
+Required space to build the package:			0 KB or 0.000 MB
+Installed files disk usage:				0 KB or 0.000 MB
+
+================================================================================
+				[kernfs]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3759448 KB or 3671.336 MB
+Disk usage before deleting the source and build dirs:	3759448 KB or 3671.336 MB
+Required space to build the package:			0 KB or 0.000 MB
+Installed files disk usage:				4 KB or 0.004 MB
+
+================================================================================
+				[creatingdirs]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3759452 KB or 3671.340 MB
+Disk usage before deleting the source and build dirs:	3759656 KB or 3671.539 MB
+Required space to build the package:			204 KB or 0.199 MB
+Installed files disk usage:				204 KB or 0.199 MB
+
+================================================================================
+				[createfiles]
+
+Build time is:						0 minutes and 1 seconds
+Build time in seconds is:				1
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3759656 KB or 3671.539 MB
+Disk usage before deleting the source and build dirs:	3760052 KB or 3671.926 MB
+Required space to build the package:			396 KB or 0.387 MB
+Installed files disk usage:				396 KB or 0.387 MB
+
+================================================================================
+				[gettext-0.22.5]
+
+Build time is:						3 minutes and 8 seconds
+Build time in seconds is:				188
+Approximate SBU time is:				2.4
+Disk usage before unpacking the package:		3760052 KB or 3671.926 MB
+Disk usage before deleting the source and build dirs:	4088260 KB or 3992.441 MB
+Required space to build the package:			328208 KB or 320.515 MB
+Installed files disk usage:				17688 KB or 17.273 MB
+
+================================================================================
+				[bison-3.8.2]
+
+Build time is:						0 minutes and 32 seconds
+Build time in seconds is:				32
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		3777740 KB or 3689.199 MB
+Disk usage before deleting the source and build dirs:	3836584 KB or 3746.664 MB
+Required space to build the package:			58844 KB or 57.465 MB
+Installed files disk usage:				5596 KB or 5.465 MB
+
+================================================================================
+				[perl-5.40.0]
+
+Build time is:						2 minutes and 16 seconds
+Build time in seconds is:				136
+Approximate SBU time is:				1.8
+Disk usage before unpacking the package:		3783336 KB or 3694.664 MB
+Disk usage before deleting the source and build dirs:	4075528 KB or 3980.008 MB
+Required space to build the package:			292192 KB or 285.344 MB
+Installed files disk usage:				63356 KB or 61.871 MB
+
+================================================================================
+				[Python-3.12.6]
+
+Build time is:						2 minutes and 0 seconds
+Build time in seconds is:				120
+Approximate SBU time is:				1.6
+Disk usage before unpacking the package:		3846692 KB or 3756.535 MB
+Disk usage before deleting the source and build dirs:	4464156 KB or 4359.527 MB
+Required space to build the package:			617464 KB or 602.992 MB
+Installed files disk usage:				283864 KB or 277.211 MB
+
+================================================================================
+				[texinfo-7.1.1]
+
+Build time is:						0 minutes and 31 seconds
+Build time in seconds is:				31
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		4130556 KB or 4033.746 MB
+Disk usage before deleting the source and build dirs:	4265028 KB or 4165.066 MB
+Required space to build the package:			134472 KB or 131.320 MB
+Installed files disk usage:				13712 KB or 13.391 MB
+
+================================================================================
+				[util-linux-2.40.2]
+
+Build time is:						0 minutes and 55 seconds
+Build time in seconds is:				55
+Approximate SBU time is:				0.7
+Disk usage before unpacking the package:		4144268 KB or 4047.137 MB
+Disk usage before deleting the source and build dirs:	4328408 KB or 4226.961 MB
+Required space to build the package:			184140 KB or 179.824 MB
+Installed files disk usage:				39320 KB or 38.398 MB
+
+================================================================================
+				[cleanup]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4183588 KB or 4085.535 MB
+Disk usage before deleting the source and build dirs:	2643764 KB or 2581.801 MB
+Required space to build the package:			-1539824 KB or -1503.734 MB
+Installed files disk usage:				-1539824 KB or -1503.734 MB
+
+================================================================================
+				[man-pages-6.9.1]
+
+Build time is:						0 minutes and 21 seconds
+Build time in seconds is:				21
+Approximate SBU time is:				0.3
+Disk usage before unpacking the package:		2643764 KB or 2581.801 MB
+Disk usage before deleting the source and build dirs:	2696520 KB or 2633.320 MB
+Required space to build the package:			52756 KB or 51.519 MB
+Installed files disk usage:				16660 KB or 16.269 MB
+
+================================================================================
+				[iana-etc-20240912]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		2660424 KB or 2598.070 MB
+Disk usage before deleting the source and build dirs:	2665336 KB or 2602.867 MB
+Required space to build the package:			4912 KB or 4.797 MB
+Installed files disk usage:				560 KB or 0.547 MB
+
+================================================================================
+				[glibc-2.40]
+
+Build time is:						6 minutes and 24 seconds
+Build time in seconds is:				384
+Approximate SBU time is:				5.0
+Disk usage before unpacking the package:		2660984 KB or 2598.617 MB
+Disk usage before deleting the source and build dirs:	3444548 KB or 3363.816 MB
+Required space to build the package:			783564 KB or 765.199 MB
+Installed files disk usage:				40808 KB or 39.852 MB
+
+================================================================================
+				[zlib-1.3.1]
+
+Build time is:						0 minutes and 4 seconds
+Build time in seconds is:				4
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2701792 KB or 2638.469 MB
+Disk usage before deleting the source and build dirs:	2708324 KB or 2644.848 MB
+Required space to build the package:			6532 KB or 6.379 MB
+Installed files disk usage:				256 KB or 0.250 MB
+
+================================================================================
+				[bzip2-1.0.8]
+
+Build time is:						0 minutes and 4 seconds
+Build time in seconds is:				4
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2702048 KB or 2638.719 MB
+Disk usage before deleting the source and build dirs:	2709472 KB or 2645.969 MB
+Required space to build the package:			7424 KB or 7.250 MB
+Installed files disk usage:				2472 KB or 2.414 MB
+
+================================================================================
+				[xz-5.6.2]
+
+Build time is:						0 minutes and 15 seconds
+Build time in seconds is:				15
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		2704520 KB or 2641.133 MB
+Disk usage before deleting the source and build dirs:	2722936 KB or 2659.117 MB
+Required space to build the package:			18416 KB or 17.984 MB
+Installed files disk usage:				1148 KB or 1.121 MB
+
+================================================================================
+				[lz4-1.10.0]
+
+Build time is:						0 minutes and 15 seconds
+Build time in seconds is:				15
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		2705668 KB or 2642.254 MB
+Disk usage before deleting the source and build dirs:	2709924 KB or 2646.410 MB
+Required space to build the package:			4256 KB or 4.156 MB
+Installed files disk usage:				756 KB or 0.738 MB
+
+================================================================================
+				[zstd-1.5.6]
+
+Build time is:						0 minutes and 49 seconds
+Build time in seconds is:				49
+Approximate SBU time is:				0.6
+Disk usage before unpacking the package:		2706424 KB or 2642.992 MB
+Disk usage before deleting the source and build dirs:	2730820 KB or 2666.816 MB
+Required space to build the package:			24396 KB or 23.824 MB
+Installed files disk usage:				2564 KB or 2.504 MB
+
+================================================================================
+				[file-5.45]
+
+Build time is:						0 minutes and 9 seconds
+Build time in seconds is:				9
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2708988 KB or 2645.496 MB
+Disk usage before deleting the source and build dirs:	2726212 KB or 2662.316 MB
+Required space to build the package:			17224 KB or 16.820 MB
+Installed files disk usage:				84 KB or 0.082 MB
+
+================================================================================
+				[readline-8.2.13]
+
+Build time is:						0 minutes and 8 seconds
+Build time in seconds is:				8
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2709072 KB or 2645.578 MB
+Disk usage before deleting the source and build dirs:	2725008 KB or 2661.141 MB
+Required space to build the package:			15936 KB or 15.563 MB
+Installed files disk usage:				5528 KB or 5.399 MB
+
+================================================================================
+				[m4-1.4.19]
+
+Build time is:						0 minutes and 35 seconds
+Build time in seconds is:				35
+Approximate SBU time is:				0.5
+Disk usage before unpacking the package:		2714600 KB or 2650.977 MB
+Disk usage before deleting the source and build dirs:	2744660 KB or 2680.332 MB
+Required space to build the package:			30060 KB or 29.355 MB
+Installed files disk usage:				276 KB or 0.269 MB
+
+================================================================================
+				[bc-7.0.2]
+
+Build time is:						0 minutes and 4 seconds
+Build time in seconds is:				4
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2714876 KB or 2651.246 MB
+Disk usage before deleting the source and build dirs:	2722528 KB or 2658.719 MB
+Required space to build the package:			7652 KB or 7.473 MB
+Installed files disk usage:				428 KB or 0.418 MB
+
+================================================================================
+				[flex-2.6.4]
+
+Build time is:						0 minutes and 10 seconds
+Build time in seconds is:				10
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2715304 KB or 2651.664 MB
+Disk usage before deleting the source and build dirs:	2729996 KB or 2666.012 MB
+Required space to build the package:			14692 KB or 14.348 MB
+Installed files disk usage:				1696 KB or 1.656 MB
+
+================================================================================
+				[tcl-8.6.15]
+
+Build time is:						1 minutes and 50 seconds
+Build time in seconds is:				110
+Approximate SBU time is:				1.4
+Disk usage before unpacking the package:		2717000 KB or 2653.320 MB
+Disk usage before deleting the source and build dirs:	2810512 KB or 2744.641 MB
+Required space to build the package:			93512 KB or 91.321 MB
+Installed files disk usage:				18936 KB or 18.492 MB
+
+================================================================================
+				[expect-5.45.4]
+
+Build time is:						0 minutes and 7 seconds
+Build time in seconds is:				7
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2735936 KB or 2671.812 MB
+Disk usage before deleting the source and build dirs:	2739968 KB or 2675.750 MB
+Required space to build the package:			4032 KB or 3.938 MB
+Installed files disk usage:				624 KB or 0.610 MB
+
+================================================================================
+				[dejagnu-1.6.3]
+
+Build time is:						0 minutes and 3 seconds
+Build time in seconds is:				3
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		2736560 KB or 2672.422 MB
+Disk usage before deleting the source and build dirs:	2742036 KB or 2677.770 MB
+Required space to build the package:			5476 KB or 5.348 MB
+Installed files disk usage:				1756 KB or 1.715 MB
+
+================================================================================
+				[pkgconf-2.3.0]
+
+Build time is:						0 minutes and 3 seconds
+Build time in seconds is:				3
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		2738316 KB or 2674.137 MB
+Disk usage before deleting the source and build dirs:	2743088 KB or 2678.797 MB
+Required space to build the package:			4772 KB or 4.660 MB
+Installed files disk usage:				516 KB or 0.504 MB
+
+================================================================================
+				[binutils-2.43.1]
+
+Build time is:						8 minutes and 43 seconds
+Build time in seconds is:				523
+Approximate SBU time is:				6.8
+Disk usage before unpacking the package:		2738832 KB or 2674.641 MB
+Disk usage before deleting the source and build dirs:	5464532 KB or 5336.457 MB
+Required space to build the package:			2725700 KB or 2661.816 MB
+Installed files disk usage:				203884 KB or 199.105 MB
+
+================================================================================
+				[gmp-6.3.0]
+
+Build time is:						1 minutes and 13 seconds
+Build time in seconds is:				73
+Approximate SBU time is:				0.9
+Disk usage before unpacking the package:		2942716 KB or 2873.746 MB
+Disk usage before deleting the source and build dirs:	2997732 KB or 2927.473 MB
+Required space to build the package:			55016 KB or 53.727 MB
+Installed files disk usage:				3012 KB or 2.942 MB
+
+================================================================================
+				[mpfr-4.2.1]
+
+Build time is:						1 minutes and 2 seconds
+Build time in seconds is:				62
+Approximate SBU time is:				0.8
+Disk usage before unpacking the package:		2945728 KB or 2876.688 MB
+Disk usage before deleting the source and build dirs:	2990020 KB or 2919.941 MB
+Required space to build the package:			44292 KB or 43.253 MB
+Installed files disk usage:				2812 KB or 2.746 MB
+
+================================================================================
+				[mpc-1.3.1]
+
+Build time is:						0 minutes and 7 seconds
+Build time in seconds is:				7
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2948540 KB or 2879.434 MB
+Disk usage before deleting the source and build dirs:	2957928 KB or 2888.602 MB
+Required space to build the package:			9388 KB or 9.168 MB
+Installed files disk usage:				988 KB or 0.964 MB
+
+================================================================================
+				[attr-2.5.2]
+
+Build time is:						0 minutes and 3 seconds
+Build time in seconds is:				3
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		2949528 KB or 2880.398 MB
+Disk usage before deleting the source and build dirs:	2953700 KB or 2884.473 MB
+Required space to build the package:			4172 KB or 4.075 MB
+Installed files disk usage:				436 KB or 0.426 MB
+
+================================================================================
+				[acl-2.3.2]
+
+Build time is:						0 minutes and 5 seconds
+Build time in seconds is:				5
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2949964 KB or 2880.824 MB
+Disk usage before deleting the source and build dirs:	2956412 KB or 2887.121 MB
+Required space to build the package:			6448 KB or 6.297 MB
+Installed files disk usage:				816 KB or 0.797 MB
+
+================================================================================
+				[libcap-2.70]
+
+Build time is:						0 minutes and 1 seconds
+Build time in seconds is:				1
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		2950780 KB or 2881.621 MB
+Disk usage before deleting the source and build dirs:	2953680 KB or 2884.453 MB
+Required space to build the package:			2900 KB or 2.832 MB
+Installed files disk usage:				604 KB or 0.590 MB
+
+================================================================================
+				[libxcrypt-4.4.36]
+
+Build time is:						0 minutes and 6 seconds
+Build time in seconds is:				6
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		2951384 KB or 2882.211 MB
+Disk usage before deleting the source and build dirs:	2958712 KB or 2889.367 MB
+Required space to build the package:			7328 KB or 7.156 MB
+Installed files disk usage:				632 KB or 0.617 MB
+
+================================================================================
+				[shadow-4.16.0]
+
+Build time is:						0 minutes and 14 seconds
+Build time in seconds is:				14
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		2952016 KB or 2882.828 MB
+Disk usage before deleting the source and build dirs:	3066620 KB or 2994.746 MB
+Required space to build the package:			114604 KB or 111.918 MB
+Installed files disk usage:				11108 KB or 10.848 MB
+
+================================================================================
+				[gcc-14.2.0]
+
+Build time is:						18 minutes and 55 seconds
+Build time in seconds is:				1135
+Approximate SBU time is:				14.7
+Disk usage before unpacking the package:		2963124 KB or 2893.676 MB
+Disk usage before deleting the source and build dirs:	8476860 KB or 8278.184 MB
+Required space to build the package:			5513736 KB or 5384.508 MB
+Installed files disk usage:				1157752 KB or 1130.617 MB
+
+================================================================================
+				[ncurses-6.5]
+
+Build time is:						0 minutes and 41 seconds
+Build time in seconds is:				41
+Approximate SBU time is:				0.5
+Disk usage before unpacking the package:		4120876 KB or 4024.293 MB
+Disk usage before deleting the source and build dirs:	4167784 KB or 4070.102 MB
+Required space to build the package:			46908 KB or 45.809 MB
+Installed files disk usage:				6280 KB or 6.133 MB
+
+================================================================================
+				[sed-4.9]
+
+Build time is:						0 minutes and 26 seconds
+Build time in seconds is:				26
+Approximate SBU time is:				0.3
+Disk usage before unpacking the package:		4127156 KB or 4030.426 MB
+Disk usage before deleting the source and build dirs:	4146560 KB or 4049.375 MB
+Required space to build the package:			19404 KB or 18.949 MB
+Installed files disk usage:				328 KB or 0.320 MB
+
+================================================================================
+				[psmisc-23.7]
+
+Build time is:						0 minutes and 6 seconds
+Build time in seconds is:				6
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		4127484 KB or 4030.746 MB
+Disk usage before deleting the source and build dirs:	4134312 KB or 4037.414 MB
+Required space to build the package:			6828 KB or 6.668 MB
+Installed files disk usage:				1488 KB or 1.453 MB
+
+================================================================================
+				[gettext-0.22.5]
+
+Build time is:						3 minutes and 26 seconds
+Build time in seconds is:				206
+Approximate SBU time is:				2.7
+Disk usage before unpacking the package:		4128972 KB or 4032.199 MB
+Disk usage before deleting the source and build dirs:	4365504 KB or 4263.188 MB
+Required space to build the package:			236532 KB or 230.989 MB
+Installed files disk usage:				12868 KB or 12.567 MB
+
+================================================================================
+				[bison-3.8.2]
+
+Build time is:						0 minutes and 34 seconds
+Build time in seconds is:				34
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		4141840 KB or 4044.766 MB
+Disk usage before deleting the source and build dirs:	4196388 KB or 4098.035 MB
+Required space to build the package:			54548 KB or 53.269 MB
+Installed files disk usage:				1272 KB or 1.242 MB
+
+================================================================================
+				[grep-3.11]
+
+Build time is:						0 minutes and 28 seconds
+Build time in seconds is:				28
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		4143112 KB or 4046.008 MB
+Disk usage before deleting the source and build dirs:	4167096 KB or 4069.430 MB
+Required space to build the package:			23984 KB or 23.422 MB
+Installed files disk usage:				-204 KB or -0.199 MB
+
+================================================================================
+				[bash-5.2.32]
+
+Build time is:						0 minutes and 35 seconds
+Build time in seconds is:				35
+Approximate SBU time is:				0.5
+Disk usage before unpacking the package:		4142908 KB or 4045.809 MB
+Disk usage before deleting the source and build dirs:	4195776 KB or 4097.438 MB
+Required space to build the package:			52868 KB or 51.629 MB
+Installed files disk usage:				1892 KB or 1.847 MB
+
+================================================================================
+				[libtool-2.4.7]
+
+Build time is:						0 minutes and 6 seconds
+Build time in seconds is:				6
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		4144800 KB or 4047.656 MB
+Disk usage before deleting the source and build dirs:	4157800 KB or 4060.352 MB
+Required space to build the package:			13000 KB or 12.696 MB
+Installed files disk usage:				2748 KB or 2.684 MB
+
+================================================================================
+				[gdbm-1.24]
+
+Build time is:						0 minutes and 7 seconds
+Build time in seconds is:				7
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		4147548 KB or 4050.340 MB
+Disk usage before deleting the source and build dirs:	4159304 KB or 4061.820 MB
+Required space to build the package:			11756 KB or 11.480 MB
+Installed files disk usage:				1680 KB or 1.640 MB
+
+================================================================================
+				[gperf-3.1]
+
+Build time is:						0 minutes and 3 seconds
+Build time in seconds is:				3
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4149228 KB or 4051.980 MB
+Disk usage before deleting the source and build dirs:	4154820 KB or 4057.441 MB
+Required space to build the package:			5592 KB or 5.461 MB
+Installed files disk usage:				632 KB or 0.618 MB
+
+================================================================================
+				[expat-2.6.3]
+
+Build time is:						0 minutes and 9 seconds
+Build time in seconds is:				9
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		4149860 KB or 4052.598 MB
+Disk usage before deleting the source and build dirs:	4158504 KB or 4061.039 MB
+Required space to build the package:			8644 KB or 8.441 MB
+Installed files disk usage:				944 KB or 0.922 MB
+
+================================================================================
+				[inetutils-2.5]
+
+Build time is:						0 minutes and 38 seconds
+Build time in seconds is:				38
+Approximate SBU time is:				0.5
+Disk usage before unpacking the package:		4150804 KB or 4053.520 MB
+Disk usage before deleting the source and build dirs:	4185864 KB or 4087.758 MB
+Required space to build the package:			35060 KB or 34.238 MB
+Installed files disk usage:				3188 KB or 3.113 MB
+
+================================================================================
+				[less-661]
+
+Build time is:						0 minutes and 6 seconds
+Build time in seconds is:				6
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		4153992 KB or 4056.633 MB
+Disk usage before deleting the source and build dirs:	4168144 KB or 4070.453 MB
+Required space to build the package:			14152 KB or 13.820 MB
+Installed files disk usage:				1016 KB or 0.992 MB
+
+================================================================================
+				[perl-5.40.0]
+
+Build time is:						2 minutes and 41 seconds
+Build time in seconds is:				161
+Approximate SBU time is:				2.1
+Disk usage before unpacking the package:		4155008 KB or 4057.625 MB
+Disk usage before deleting the source and build dirs:	4404840 KB or 4301.602 MB
+Required space to build the package:			249832 KB or 243.977 MB
+Installed files disk usage:				21028 KB or 20.535 MB
+
+================================================================================
+				[xml-parser-2.47]
+
+Build time is:						0 minutes and 2 seconds
+Build time in seconds is:				2
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4176036 KB or 4078.160 MB
+Disk usage before deleting the source and build dirs:	4178444 KB or 4080.512 MB
+Required space to build the package:			2408 KB or 2.352 MB
+Installed files disk usage:				604 KB or 0.590 MB
+
+================================================================================
+				[intltool-0.51.0]
+
+Build time is:						0 minutes and 2 seconds
+Build time in seconds is:				2
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4176640 KB or 4078.750 MB
+Disk usage before deleting the source and build dirs:	4178012 KB or 4080.090 MB
+Required space to build the package:			1372 KB or 1.340 MB
+Installed files disk usage:				184 KB or 0.180 MB
+
+================================================================================
+				[autoconf-2.72]
+
+Build time is:						0 minutes and 2 seconds
+Build time in seconds is:				2
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4176824 KB or 4078.930 MB
+Disk usage before deleting the source and build dirs:	4189084 KB or 4090.902 MB
+Required space to build the package:			12260 KB or 11.972 MB
+Installed files disk usage:				3568 KB or 3.484 MB
+
+================================================================================
+				[automake-1.17]
+
+Build time is:						0 minutes and 1 seconds
+Build time in seconds is:				1
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4180392 KB or 4082.414 MB
+Disk usage before deleting the source and build dirs:	4196244 KB or 4097.895 MB
+Required space to build the package:			15852 KB or 15.481 MB
+Installed files disk usage:				2476 KB or 2.418 MB
+
+================================================================================
+				[openssl-3.3.2]
+
+Build time is:						5 minutes and 5 seconds
+Build time in seconds is:				305
+Approximate SBU time is:				4.0
+Disk usage before unpacking the package:		4182868 KB or 4084.832 MB
+Disk usage before deleting the source and build dirs:	5063532 KB or 4944.855 MB
+Required space to build the package:			880664 KB or 860.023 MB
+Installed files disk usage:				45396 KB or 44.332 MB
+
+================================================================================
+				[kmod-33]
+
+Build time is:						0 minutes and 9 seconds
+Build time in seconds is:				9
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		4228264 KB or 4129.164 MB
+Disk usage before deleting the source and build dirs:	4239856 KB or 4140.484 MB
+Required space to build the package:			11592 KB or 11.320 MB
+Installed files disk usage:				1208 KB or 1.180 MB
+
+================================================================================
+				[libelf-0.191]
+
+Build time is:						0 minutes and 52 seconds
+Build time in seconds is:				52
+Approximate SBU time is:				0.7
+Disk usage before unpacking the package:		4229472 KB or 4130.344 MB
+Disk usage before deleting the source and build dirs:	4335752 KB or 4234.133 MB
+Required space to build the package:			106280 KB or 103.789 MB
+Installed files disk usage:				1000 KB or 0.976 MB
+
+================================================================================
+				[libffi-3.4.6]
+
+Build time is:						0 minutes and 5 seconds
+Build time in seconds is:				5
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		4230472 KB or 4131.320 MB
+Disk usage before deleting the source and build dirs:	4239216 KB or 4139.859 MB
+Required space to build the package:			8744 KB or 8.539 MB
+Installed files disk usage:				160 KB or 0.157 MB
+
+================================================================================
+				[Python-3.12.6]
+
+Build time is:						5 minutes and 42 seconds
+Build time in seconds is:				342
+Approximate SBU time is:				4.4
+Disk usage before unpacking the package:		4230632 KB or 4131.477 MB
+Disk usage before deleting the source and build dirs:	4723648 KB or 4612.938 MB
+Required space to build the package:			493016 KB or 481.461 MB
+Installed files disk usage:				82928 KB or 80.984 MB
+
+================================================================================
+				[flit-core-3.9.0]
+
+Build time is:						0 minutes and 1 seconds
+Build time in seconds is:				1
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4313560 KB or 4212.461 MB
+Disk usage before deleting the source and build dirs:	4315200 KB or 4214.062 MB
+Required space to build the package:			1640 KB or 1.601 MB
+Installed files disk usage:				916 KB or 0.894 MB
+
+================================================================================
+				[wheel-0.44.0]
+
+Build time is:						0 minutes and 1 seconds
+Build time in seconds is:				1
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4314476 KB or 4213.355 MB
+Disk usage before deleting the source and build dirs:	4315996 KB or 4214.840 MB
+Required space to build the package:			1520 KB or 1.485 MB
+Installed files disk usage:				640 KB or 0.625 MB
+
+================================================================================
+				[setuptools-75.1.0]
+
+Build time is:						0 minutes and 2 seconds
+Build time in seconds is:				2
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4315116 KB or 4213.980 MB
+Disk usage before deleting the source and build dirs:	4342696 KB or 4240.914 MB
+Required space to build the package:			27580 KB or 26.934 MB
+Installed files disk usage:				11364 KB or 11.098 MB
+
+================================================================================
+				[ninja-1.12.1]
+
+Build time is:						0 minutes and 33 seconds
+Build time in seconds is:				33
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		4326480 KB or 4225.078 MB
+Disk usage before deleting the source and build dirs:	4364820 KB or 4262.520 MB
+Required space to build the package:			38340 KB or 37.442 MB
+Installed files disk usage:				7580 KB or 7.402 MB
+
+================================================================================
+				[meson-1.5.2]
+
+Build time is:						0 minutes and 2 seconds
+Build time in seconds is:				2
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4334060 KB or 4232.480 MB
+Disk usage before deleting the source and build dirs:	4378012 KB or 4275.402 MB
+Required space to build the package:			43952 KB or 42.922 MB
+Installed files disk usage:				9256 KB or 9.040 MB
+
+================================================================================
+				[coreutils-9.5]
+
+Build time is:						1 minutes and 33 seconds
+Build time in seconds is:				93
+Approximate SBU time is:				1.2
+Disk usage before unpacking the package:		4343316 KB or 4241.520 MB
+Disk usage before deleting the source and build dirs:	4471676 KB or 4366.871 MB
+Required space to build the package:			128360 KB or 125.351 MB
+Installed files disk usage:				-5288 KB or -5.165 MB
+
+================================================================================
+				[check-0.15.2]
+
+Build time is:						0 minutes and 10 seconds
+Build time in seconds is:				10
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		4338028 KB or 4236.355 MB
+Disk usage before deleting the source and build dirs:	4348800 KB or 4246.875 MB
+Required space to build the package:			10772 KB or 10.520 MB
+Installed files disk usage:				624 KB or 0.610 MB
+
+================================================================================
+				[diffutils-3.10]
+
+Build time is:						0 minutes and 28 seconds
+Build time in seconds is:				28
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		4338652 KB or 4236.965 MB
+Disk usage before deleting the source and build dirs:	4362884 KB or 4260.629 MB
+Required space to build the package:			24232 KB or 23.664 MB
+Installed files disk usage:				-208 KB or -0.203 MB
+
+================================================================================
+				[gawk-5.3.1]
+
+Build time is:						0 minutes and 22 seconds
+Build time in seconds is:				22
+Approximate SBU time is:				0.3
+Disk usage before unpacking the package:		4338444 KB or 4236.762 MB
+Disk usage before deleting the source and build dirs:	4382188 KB or 4279.480 MB
+Required space to build the package:			43744 KB or 42.718 MB
+Installed files disk usage:				2760 KB or 2.695 MB
+
+================================================================================
+				[findutils-4.10.0]
+
+Build time is:						0 minutes and 41 seconds
+Build time in seconds is:				41
+Approximate SBU time is:				0.5
+Disk usage before unpacking the package:		4341204 KB or 4239.457 MB
+Disk usage before deleting the source and build dirs:	4383488 KB or 4280.750 MB
+Required space to build the package:			42284 KB or 41.293 MB
+Installed files disk usage:				-288 KB or -0.281 MB
+
+================================================================================
+				[groff-1.23.0]
+
+Build time is:						0 minutes and 37 seconds
+Build time in seconds is:				37
+Approximate SBU time is:				0.5
+Disk usage before unpacking the package:		4340916 KB or 4239.176 MB
+Disk usage before deleting the source and build dirs:	4449496 KB or 4345.211 MB
+Required space to build the package:			108580 KB or 106.035 MB
+Installed files disk usage:				34880 KB or 34.062 MB
+
+================================================================================
+				[grub-2.12]
+
+Build time is:						1 minutes and 10 seconds
+Build time in seconds is:				70
+Approximate SBU time is:				0.9
+Disk usage before unpacking the package:		4375796 KB or 4273.238 MB
+Disk usage before deleting the source and build dirs:	4545884 KB or 4439.340 MB
+Required space to build the package:			170088 KB or 166.102 MB
+Installed files disk usage:				37584 KB or 36.703 MB
+
+================================================================================
+				[gzip-1.13]
+
+Build time is:						0 minutes and 16 seconds
+Build time in seconds is:				16
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		4413380 KB or 4309.941 MB
+Disk usage before deleting the source and build dirs:	4424440 KB or 4320.742 MB
+Required space to build the package:			11060 KB or 10.801 MB
+Installed files disk usage:				108 KB or 0.106 MB
+
+================================================================================
+				[iproute2-6.10.0]
+
+Build time is:						0 minutes and 15 seconds
+Build time in seconds is:				15
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		4413488 KB or 4310.047 MB
+Disk usage before deleting the source and build dirs:	4430900 KB or 4327.051 MB
+Required space to build the package:			17412 KB or 17.004 MB
+Installed files disk usage:				3740 KB or 3.652 MB
+
+================================================================================
+				[kbd-2.6.4]
+
+Build time is:						0 minutes and 12 seconds
+Build time in seconds is:				12
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		4417228 KB or 4313.699 MB
+Disk usage before deleting the source and build dirs:	4452396 KB or 4348.043 MB
+Required space to build the package:			35168 KB or 34.344 MB
+Installed files disk usage:				6232 KB or 6.086 MB
+
+================================================================================
+				[libpipeline-1.5.8]
+
+Build time is:						0 minutes and 17 seconds
+Build time in seconds is:				17
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		4423460 KB or 4319.785 MB
+Disk usage before deleting the source and build dirs:	4433788 KB or 4329.871 MB
+Required space to build the package:			10328 KB or 10.086 MB
+Installed files disk usage:				308 KB or 0.301 MB
+
+================================================================================
+				[make-4.4.1]
+
+Build time is:						0 minutes and 9 seconds
+Build time in seconds is:				9
+Approximate SBU time is:				0.1
+Disk usage before unpacking the package:		4423768 KB or 4320.086 MB
+Disk usage before deleting the source and build dirs:	4437104 KB or 4333.109 MB
+Required space to build the package:			13336 KB or 13.023 MB
+Installed files disk usage:				656 KB or 0.641 MB
+
+================================================================================
+				[patch-2.7.6]
+
+Build time is:						0 minutes and 25 seconds
+Build time in seconds is:				25
+Approximate SBU time is:				0.3
+Disk usage before unpacking the package:		4424424 KB or 4320.727 MB
+Disk usage before deleting the source and build dirs:	4436032 KB or 4332.062 MB
+Required space to build the package:			11608 KB or 11.335 MB
+Installed files disk usage:				12 KB or 0.011 MB
+
+================================================================================
+				[tar-1.35]
+
+Build time is:						0 minutes and 41 seconds
+Build time in seconds is:				41
+Approximate SBU time is:				0.5
+Disk usage before unpacking the package:		4424436 KB or 4320.738 MB
+Disk usage before deleting the source and build dirs:	4466756 KB or 4362.066 MB
+Required space to build the package:			42320 KB or 41.328 MB
+Installed files disk usage:				3252 KB or 3.176 MB
+
+================================================================================
+				[texinfo-7.1.1]
+
+Build time is:						0 minutes and 31 seconds
+Build time in seconds is:				31
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		4427688 KB or 4323.914 MB
+Disk usage before deleting the source and build dirs:	4550740 KB or 4444.082 MB
+Required space to build the package:			123052 KB or 120.168 MB
+Installed files disk usage:				2276 KB or 2.223 MB
+
+================================================================================
+				[vim-9.1.0738]
+
+Build time is:						0 minutes and 56 seconds
+Build time in seconds is:				56
+Approximate SBU time is:				0.7
+Disk usage before unpacking the package:		4429964 KB or 4326.137 MB
+Disk usage before deleting the source and build dirs:	4611988 KB or 4503.895 MB
+Required space to build the package:			182024 KB or 177.758 MB
+Installed files disk usage:				48420 KB or 47.285 MB
+
+================================================================================
+				[markupsafe-2.1.5]
+
+Build time is:						0 minutes and 2 seconds
+Build time in seconds is:				2
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4478384 KB or 4373.422 MB
+Disk usage before deleting the source and build dirs:	4478892 KB or 4373.918 MB
+Required space to build the package:			508 KB or 0.496 MB
+Installed files disk usage:				136 KB or 0.133 MB
+
+================================================================================
+				[jinja2-3.1.4]
+
+Build time is:						0 minutes and 1 seconds
+Build time in seconds is:				1
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4478520 KB or 4373.555 MB
+Disk usage before deleting the source and build dirs:	4481092 KB or 4376.066 MB
+Required space to build the package:			2572 KB or 2.511 MB
+Installed files disk usage:				1260 KB or 1.230 MB
+
+================================================================================
+				[systemd-256.5]
+
+Build time is:						3 minutes and 26 seconds
+Build time in seconds is:				206
+Approximate SBU time is:				2.7
+Disk usage before unpacking the package:		4479780 KB or 4374.785 MB
+Disk usage before deleting the source and build dirs:	4754192 KB or 4642.766 MB
+Required space to build the package:			274412 KB or 267.981 MB
+Installed files disk usage:				56268 KB or 54.949 MB
+
+================================================================================
+				[dbus-1.14.10]
+
+Build time is:						0 minutes and 16 seconds
+Build time in seconds is:				16
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		4536048 KB or 4429.734 MB
+Disk usage before deleting the source and build dirs:	4555752 KB or 4448.977 MB
+Required space to build the package:			19704 KB or 19.243 MB
+Installed files disk usage:				1588 KB or 1.551 MB
+
+================================================================================
+				[man-db-2.13.0]
+
+Build time is:						0 minutes and 44 seconds
+Build time in seconds is:				44
+Approximate SBU time is:				0.6
+Disk usage before unpacking the package:		4537636 KB or 4431.285 MB
+Disk usage before deleting the source and build dirs:	4582036 KB or 4474.645 MB
+Required space to build the package:			44400 KB or 43.360 MB
+Installed files disk usage:				4372 KB or 4.270 MB
+
+================================================================================
+				[procps-ng-4.0.4]
+
+Build time is:						0 minutes and 13 seconds
+Build time in seconds is:				13
+Approximate SBU time is:				0.2
+Disk usage before unpacking the package:		4542008 KB or 4435.555 MB
+Disk usage before deleting the source and build dirs:	4567340 KB or 4460.293 MB
+Required space to build the package:			25332 KB or 24.738 MB
+Installed files disk usage:				5380 KB or 5.254 MB
+
+================================================================================
+				[util-linux-2.40.2]
+
+Build time is:						0 minutes and 58 seconds
+Build time in seconds is:				58
+Approximate SBU time is:				0.8
+Disk usage before unpacking the package:		4547388 KB or 4440.809 MB
+Disk usage before deleting the source and build dirs:	4694812 KB or 4584.777 MB
+Required space to build the package:			147424 KB or 143.968 MB
+Installed files disk usage:				1680 KB or 1.640 MB
+
+================================================================================
+				[e2fsprogs-1.47.1]
+
+Build time is:						0 minutes and 33 seconds
+Build time in seconds is:				33
+Approximate SBU time is:				0.4
+Disk usage before unpacking the package:		4549068 KB or 4442.449 MB
+Disk usage before deleting the source and build dirs:	4628456 KB or 4519.977 MB
+Required space to build the package:			79388 KB or 77.528 MB
+Installed files disk usage:				10712 KB or 10.461 MB
+
+================================================================================
+				[cleanup]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		4559780 KB or 4452.910 MB
+Disk usage before deleting the source and build dirs:	3513172 KB or 3430.832 MB
+Required space to build the package:			-1046608 KB or -1022.078 MB
+Installed files disk usage:				-1046608 KB or -1022.078 MB
+
+================================================================================
+				[network]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3513172 KB or 3430.832 MB
+Disk usage before deleting the source and build dirs:	3513180 KB or 3430.840 MB
+Required space to build the package:			8 KB or 0.008 MB
+Installed files disk usage:				8 KB or 0.008 MB
+
+================================================================================
+				[clock]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3513180 KB or 3430.840 MB
+Disk usage before deleting the source and build dirs:	3513184 KB or 3430.844 MB
+Required space to build the package:			4 KB or 0.004 MB
+Installed files disk usage:				4 KB or 0.004 MB
+
+================================================================================
+				[console]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3513184 KB or 3430.844 MB
+Disk usage before deleting the source and build dirs:	3513188 KB or 3430.848 MB
+Required space to build the package:			4 KB or 0.004 MB
+Installed files disk usage:				4 KB or 0.004 MB
+
+================================================================================
+				[locale]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3513188 KB or 3430.848 MB
+Disk usage before deleting the source and build dirs:	3513196 KB or 3430.855 MB
+Required space to build the package:			8 KB or 0.007 MB
+Installed files disk usage:				8 KB or 0.007 MB
+
+================================================================================
+				[inputrc]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3513196 KB or 3430.855 MB
+Disk usage before deleting the source and build dirs:	3513200 KB or 3430.859 MB
+Required space to build the package:			4 KB or 0.004 MB
+Installed files disk usage:				4 KB or 0.004 MB
+
+================================================================================
+				[etcshells]
+
+Build time is:						0 minutes and 0 seconds
+Build time in seconds is:				0
+Approximate SBU time is:				0.0
+Disk usage before unpacking the package:		3513200 KB or 3430.859 MB
+Disk usage before deleting the source and build dirs:	3513204 KB or 3430.863 MB
+Required space to build the package:			4 KB or 0.004 MB
+Installed files disk usage:				8 KB or 0.008 MB
+
+================================================================================
+				[kernel-6.10.8]
+
+Build time is:						12 minutes and 43 seconds
+Build time in seconds is:				763
+Approximate SBU time is:				9.9
+Disk usage before unpacking the package:		3513208 KB or 3430.867 MB
+Disk usage before deleting the source and build dirs:	5958452 KB or 5818.801 MB
+Required space to build the package:			2445244 KB or 2387.934 MB
+Installed files disk usage:				102736 KB or 100.328 MB
+
+
+================================================================================
+
+Total time required to build the system:		119.1  SBU
+Total Installed files disk usage:			3084844.000 KB or 3012.543 MB
