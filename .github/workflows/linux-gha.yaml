@@ -78,8 +78,9 @@ jobs:
         shell: 'script -q -e -c "bash {0}"'
         run: |
           set -eo pipefail
-          # https://www.linuxfromscratch.org/lfs/view/systemd/chapter08/gmp.html
-          # If libraries suitable for processors less capable than the host's CPU are desired
+          # Workaround for: make BREAKPOINT=828-gcc: internal compiler error: Illegal instruction
+          # See https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2026-03/msg00011.html
+          # and https://www.linuxfromscratch.org/lfs/view/systemd/chapter08/gmp.html
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs/book-source && sed -i \"s/--disable-static/--disable-static --host=none-linux-gnu/\" chapter08/gmp.xml'"
 
       - name: disable slow chapter8 tests
