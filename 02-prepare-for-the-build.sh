@@ -53,6 +53,8 @@ cd jhalfs
 # Create device and parition it to use for the /mnt/build_dir mount point
 # See https://www.linuxfromscratch.org/lfs/view/development/chapter02/creatingpartition.html
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils parted udev
+# Starting from around 2026-08-15 make_mk_LUSER 617-gcc-pass2-16.2.0 needs over 10GB (and below 15GB)
+# x86_64-lfs-linux-gnu/bin/ranlib: libstdc++.a: error reading string-inst.o: No space left on device
 bash /vagrant/02.4-create-a-new-partition.sh 15
 # Create loopback partition block devices with mknod
 # https://github.com/moby/moby/issues/27886#issuecomment-417074845

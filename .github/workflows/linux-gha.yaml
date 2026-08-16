@@ -464,6 +464,13 @@ jobs:
         env:
           TARGET: mk_SUDO
 
+      - name: df -h
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker compose exec jhalfs bash -c "df -h"
+
       - name: tail last log
         if: always()
         shell: 'script -q -e -c "bash {0}"'
@@ -486,6 +493,13 @@ jobs:
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-10/msg00013.html
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-shadow)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-shadow)) as requested\"'"
+
+      - name: df -h
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker compose exec jhalfs bash -c "df -h"
 
       - name: tail last log
         if: always()
@@ -661,6 +675,13 @@ jobs:
           set -eo pipefail
           # https://lists.linuxfromscratch.org/sympa/arc/alfs-discuss/2022-10/msg00013.html
           docker compose exec jhalfs bash -c "su - vagrant -c 'source /vagrant/jhalfs/jhalfs.sh && cd \$LFS/jhalfs && make BREAKPOINT=\$(basename lfs-commands/chapter08/\$(echo *-gcc)) | ansi2txt | ack --passthru \"stopped at \$(basename lfs-commands/chapter08/\$(echo *-gcc)) as requested\"'"
+
+      - name: df -h
+        if: always()
+        shell: 'script -q -e -c "bash {0}"'
+        run: |
+          set -eo pipefail
+          docker compose exec jhalfs bash -c "df -h"
 
       - name: tail last log
         if: always()
