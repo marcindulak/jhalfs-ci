@@ -1,0 +1,37 @@
+#!/usr/bin/expect
+
+# Wait for boot
+set timeout 180
+
+# Set environment variables
+set arch $::env(JHALFS_ARCH)
+
+if { $arch == "x86_64" } {
+    # kvm requires hardware virtualization
+    set accel "tcg"
+} elseif { $arch == "arm64" } {
+    # hvf requires hardware virtualization
+    set accel "tcg"
+} else {
+    puts { "Unsupported architecture: $arch" ; exit 1 }
+}
+
+# Start the guest VM
+spawn qemu-system-$arch -display curses -m 256M -smp 1 -drive file=build_dir.img,format=raw,if=virtio -machine type=pc,accel=$accel
+
+expect {
+    "*login: *" { send "root\n" }
+    timeout   { puts "Timeout during boot" ; exit 1 }
+}
+
+expect "*Password: *"
+send "root\n"
+
+expect "*bash*"
+send "cat /etc/*release | grep PRETTY\n"
+
+expect "*Linux From Scratch*"
+send "python3 -V\n"
+
+expect "*Python*"
+send "shutdown -h now\n"
